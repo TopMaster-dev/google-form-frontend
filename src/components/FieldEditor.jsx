@@ -1,0 +1,411 @@
+import React, { useState, useRef } from 'react'
+import { uploadImage, uploadMultipleImages, deleteImage } from '../services/uploadService'
+
+export default function FieldEditor({ field, onChange }) {
+    const [imagePreview, setImagePreview] = useState(field.imageUrl || null)
+    const [adminImagePreviews, setAdminImagePreviews] = useState(field.adminImages || [])
+    const [selectedAnnotation, setSelectedAnnotation] = useState(null)
+    const [uploading, setUploading] = useState(false)
+    const imageRef = useRef(null)
+    const adminImageInputRef = useRef(null)
+
+    function set(key, value) { onChange({ [key]: value }) }
+
+    function addOption() {
+        const opts = Array.isArray(field.options) ? field.options : []
+        const newOption = { id: Date.now(), label: 'Option' }
+        set('options', [...opts, newOption])
+    }
+
+    // function handleImageUpload(e) {
+    //     const file = e.target.files[0]
+    //     if (file) {
+    //         const reader = new FileReader()
+    //         reader.onload = (e) => {
+    //             setImagePreview(e.target.result)
+    //             set('imageUrl', e.target.result)
+    //             set('annotations', [])
+    //         }
+    //         reader.readAsDataURL(file)
+    //     }
+    // }
+    async function handleImageUpload(e) {
+        const file = e.target.files[0]
+        if (file) {
+            setUploading(true)
+            try {
+                const filePath = await uploadImage(file)
+                // Set preview with full URL path
+                setImagePreview(filePath)
+                // Store only the file path in the field
+                set('imageUrl', filePath)
+                set('annotations', [])
+            } catch (error) {
+                alert('Error uploading image: ' + error.message)
+            } finally {
+                setUploading(false)
+            }
+        }
+    }
+
+    // Updated admin images upload handler
+    async function handleAdminImagesUpload(files) {
+        setUploading(true)
+        try {
+            const filePaths = await uploadMultipleImages(files)
+
+            const newImages = filePaths.map(filePath => ({
+                id: Date.now() + Math.random(),
+                url: filePath // Store file path instead of base64
+            }))
+
+            const updatedImages = [...(field.adminImages || []), ...newImages]
+            set('adminImages', updatedImages)
+            setAdminImagePreviews(updatedImages)
+        } catch (error) {
+            alert('Error uploading admin images: ' + error.message)
+        } finally {
+            setUploading(false)
+        }
+    }
+
+    // Handle admin image deletion
+    async function handleAdminImageDelete(img) {
+        try {
+            // Extract filename from path
+            const fileName = img.url.split('/').pop();
+            await deleteImage(fileName);
+
+            // Remove from local state
+            const updatedImages = field.adminImages.filter(i => i.id !== img.id);
+            set('adminImages', updatedImages);
+            setAdminImagePreviews(updatedImages);
+        } catch (error) {
+            alert('Error deleting image: ' + error.message);
+        }
+    }
+
+    function addAnnotation(type) {
+        const annotations = Array.isArray(field.annotations) ? [...field.annotations] : []
+        const newAnnotation = {
+            id: Date.now(),
+            type,
+            x: 50,
+            y: 50,
+            width: type === 'hotspot' ? 20 : 100,
+            height: type === 'hotspot' ? 20 : 40,
+            options: type === 'multiple_choice' ? [{ id: Date.now(), label: 'Option 1' }] : []
+        }
+        set('annotations', [...annotations, newAnnotation])
+    }
+
+    function updateOption(i, val) {
+        const opts = Array.isArray(field.options) ? [...field.options] : []
+        const updatedOpt = typeof opts[i] === 'string' ? { id: Date.now(), label: val } : { ...opts[i], label: val }
+        const newOpts = [...opts]
+        newOpts[i] = updatedOpt
+        set('options', newOpts)
+    }
+
+    function removeOption(i) {
+        const opts = Array.isArray(field.options) ? [...field.options] : []
+        set('options', opts.filter((_, idx) => idx !== i))
+    } return (
+        <div>
+            <div className="flex items-center gap-2 mb-2">
+                <label className="text-sm">Required</label>
+                <input type="checkbox" checked={!!field.required} onChange={e => set('required', e.target.checked)} />
+            </div>
+
+            {['short_answer', 'paragraph', 'date', 'time'].includes(field.type) && (
+                <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
+            )}
+
+            {field.type === 'file_upload' && (
+                <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
+            )}
+
+            {field.type === 'image_upload' && (
+                <div className="space-y-4">
+                    {/* Admin Images Section */}
+                    <div className="border-b pb-4 mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <label className="text-sm font-medium">管理者画像を有効にする</label>
+                            <input
+                                type="checkbox"
+                                checked={field.enableAdminImages}
+                                onChange={e => set('enableAdminImages', e.target.checked)}
+                            />
+                        </div>
+
+                        {field.enableAdminImages && (
+                            <div className="space-y-4">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    multiple
+                                    ref={adminImageInputRef}
+                                    // onChange={e => {
+                                    //     const files = Array.from(e.target.files);
+                                    //     const readers = files.map(file => {
+                                    //         return new Promise((resolve) => {
+                                    //             const reader = new FileReader();
+                                    //             reader.onload = (e) => resolve(e.target.result);
+                                    //             reader.readAsDataURL(file);
+                                    //         });
+                                    //     });
+
+                                    //     Promise.all(readers).then(results => {
+                                    //         const newImages = results.map(dataUrl => ({
+                                    //             id: Date.now() + Math.random(),
+                                    //             url: dataUrl
+                                    //         }));
+                                    //         const updatedImages = [...(field.adminImages || []), ...newImages];
+                                    //         set('adminImages', updatedImages);
+                                    //         setAdminImagePreviews(updatedImages);
+                                    //     });
+                                    // }}
+                                    onChange={e => {
+                                        const files = Array.from(e.target.files);
+                                        handleAdminImagesUpload(files);
+                                    }}
+                                    className="mb-2"
+                                    disabled={uploading}
+                                />
+                                {uploading && <div className="text-sm text-blue-600">画像をアップロードしています...</div>}
+                                <div className="grid grid-cols-3 gap-4">
+                                    {(field.adminImages || []).map((img, index) => (
+                                        <div key={img.id} className="relative">
+                                            <img
+                                                src={img.url}
+                                                alt={`Admin uploaded ${index + 1}`}
+                                                className="w-full h-32 object-cover rounded"
+                                            />
+                                            <button
+                                                // onClick={() => {
+                                                //     const updatedImages = field.adminImages.filter(i => i.id !== img.id);
+                                                //     set('adminImages', updatedImages);
+                                                //     setAdminImagePreviews(updatedImages);
+                                                // }}
+                                                onClick={() => handleAdminImageDelete(img)}
+                                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                            >×</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Content input field */}
+                    <div>
+                        <label className="block text-sm font-medium mb-2">内容</label>
+                        <input
+                            type="text"
+                            value={field.content || ''}
+                            onChange={e => set('content', e.target.value)}
+                            placeholder="この画像アップロードフィールドの内容"
+                            className="w-full p-2 border rounded"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <label className="text-sm">最大画像数:</label>
+                        <input
+                            type="number"
+                            min="1"
+                            value={field.max_images || 1}
+                            onChange={e => set('max_images', Math.max(1, parseInt(e.target.value)))}
+                            className="w-20 p-2 border rounded"
+                        />
+                    </div>
+
+                    {/* Options for all uploaded images */}
+                    <div className="border-t pt-4">
+                        <div className="text-lg font-medium mb-4">すべてのアップロード画像のオプション</div>
+
+                        {/* Checkbox options section */}
+                        <div className="mb-6">
+                            <div className="text-sm font-medium mb-2">チェックボックスオプション (適用するものを選択)</div>
+                            <div className="space-y-2">
+                                {(field.checkbox_options || []).map((opt, i) => (
+                                    <div key={opt.id || i} className="flex gap-2">
+                                        <input
+                                            value={typeof opt === 'string' ? opt : (opt.label || '')}
+                                            onChange={e => {
+                                                const opts = [...(field.checkbox_options || [])];
+                                                opts[i] = { id: opts[i].id || Date.now(), label: e.target.value };
+                                                set('checkbox_options', opts);
+                                            }}
+                                            className="flex-1 p-2 border rounded"
+                                            placeholder="チェックボックスオプションテキスト"
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                const opts = [...(field.checkbox_options || [])];
+                                                opts.splice(i, 1);
+                                                set('checkbox_options', opts);
+                                            }}
+                                            className="px-2 py-1 border rounded text-red-600"
+                                        >x</button>
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={() => {
+                                        const opts = [...(field.checkbox_options || [])];
+                                        opts.push({ id: Date.now(), label: '' });
+                                        set('checkbox_options', opts);
+                                    }}
+                                    className="px-3 py-1 border rounded"
+                                >+ チェックボックスオプションを追加</button>
+                            </div>
+                        </div>
+
+                        {/* Multiple choice (radio) section */}
+                        <div className="mb-4">
+                            <div className="space-y-2">
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">複数選択質問 (1つ選択)</label>
+                                    <input
+                                        value={field.choice_question || ''}
+                                        onChange={e => set('choice_question', e.target.value)}
+                                        placeholder="すべての画像の質問"
+                                        className="w-full p-2 border rounded"
+                                    />
+                                </div>
+                                {(field.choice_options || []).map((opt, i) => (
+                                    <div key={opt.id || i} className="flex gap-2">
+                                        <input
+                                            value={typeof opt === 'string' ? opt : (opt.label || '')}
+                                            onChange={e => {
+                                                const opts = [...(field.choice_options || [])];
+                                                opts[i] = { id: opts[i].id || Date.now(), label: e.target.value };
+                                                set('choice_options', opts);
+                                            }}
+                                            className="flex-1 p-2 border rounded"
+                                            placeholder="選択オプションテキスト"
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                const opts = [...(field.choice_options || [])];
+                                                opts.splice(i, 1);
+                                                set('choice_options', opts);
+                                            }}
+                                            className="px-2 py-1 border rounded text-red-600"
+                                        >x</button>
+                                    </div>
+                                ))}
+                                <button
+                                    onClick={() => {
+                                        const opts = [...(field.choice_options || [])];
+                                        opts.push({ id: Date.now(), label: '' });
+                                        set('choice_options', opts);
+                                    }}
+                                    className="px-3 py-1 border rounded"
+                                >+ 選択オプションを追加</button>
+                            </div>
+                        </div>
+
+                        <div className="text-sm text-slate-500 italic mt-2">
+                            注: これらのオプションは、このフィールドにアップロードされたすべての画像に適用されます
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {field.type === 'image' && (
+                <div className="space-y-4">
+                    <div>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="mb-2"
+                        />
+                        {imagePreview && (
+                            <div className="relative border rounded p-2">
+                                <img
+                                    ref={imageRef}
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="max-w-full h-auto"
+                                    onError={(e) => {
+                                        e.target.src = '/placeholder-image.jpg';
+                                    }}
+                                />
+                                {field.annotations?.map((anno, i) => (
+                                    <div
+                                        key={anno.id}
+                                        className="absolute border-2 border-blue-500 bg-blue-100/50"
+                                        style={{
+                                            left: `${anno.x}%`,
+                                            top: `${anno.y}%`,
+                                            width: `${anno.width}px`,
+                                            height: `${anno.height}px`,
+                                            cursor: 'move'
+                                        }}
+                                        onClick={() => setSelectedAnnotation(anno)}
+                                    >
+                                        {anno.type === 'text' && <div className="text-xs">テキスト入力</div>}
+                                        {anno.type === 'multiple_choice' && <div className="text-xs">複数選択</div>}
+                                        {anno.type === 'hotspot' && <div className="text-xs">⭐</div>}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {imagePreview && (
+                        <div className="space-y-2">
+                            <div className="text-sm font-medium">注釈を追加:</div>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => addAnnotation('text')}
+                                    className="px-3 py-1 border rounded"
+                                >
+                                    + テキスト入力を追加
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => addAnnotation('multiple_choice')}
+                                    className="px-3 py-1 border rounded"
+                                >
+                                    + 複数選択を追加
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => addAnnotation('hotspot')}
+                                    className="px-3 py-1 border rounded"
+                                >
+                                    + ホットスポットを追加
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {['multiple_choice', 'checkboxes', 'dropdown'].includes(field.type) && (
+                <div>
+                    <div className="text-sm font-medium mb-2">オプション</div>
+                    {(field.options || []).map((opt, i) => (
+                        <div key={opt.id || i} className="flex gap-2 mb-2">
+                            <input
+                                value={typeof opt === 'string' ? opt : (opt.label || '')}
+                                onChange={e => updateOption(i, e.target.value)}
+                                className="flex-1 p-2 border rounded"
+                                placeholder="オプションテキスト"
+                            />
+                            <button
+                                onClick={() => removeOption(i)}
+                                className="px-2 py-1 border rounded text-red-600"
+                                type="button"
+                            >x</button>
+                        </div>
+                    ))}
+                    <button onClick={addOption} className="px-3 py-1 border rounded">+ オプションを追加</button>
+                </div>
+            )}
+        </div>
+    )
+}

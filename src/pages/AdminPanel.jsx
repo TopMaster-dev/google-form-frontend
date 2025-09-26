@@ -1,0 +1,152 @@
+import React, { useEffect, useState } from 'react'
+import { getMyForms, createForm, updateForm, deleteForm, getForm } from '../api'
+import FormBuilderPanel from '../components/FormBuilder'
+import FormsList from '../components/FormList'
+import ResponsesModal from '../components/ResponseViewer'
+import { clearAuth } from '../utils/auth'
+
+export default function AdminPanel({ user, onLogout }) {
+    const [forms, setForms] = useState([])
+    const [active, setActive] = useState(null)
+    const [showResponsesFor, setShowResponsesFor] = useState(null)
+
+    async function load() {
+        try {
+            const data = await getMyForms()
+            setForms(data.forms || [])
+        } catch (e) { console.error(e) }
+    }
+
+    useEffect(() => { load() }, [])
+
+    async function handleSave(form) {
+        try {
+            if (form.id) {
+                await updateForm(form.id, form)
+            } else {
+                await createForm(form)
+            }
+            await load()
+        } catch (e) { console.error(e) }
+    }
+
+    async function handleDelete(id) {
+        if (!confirm('このフォームを削除しますか？')) return
+        await deleteForm(id)
+        if (active?.id === id) setActive(null)
+        await load()
+    }
+
+    function safeParseArray(value) {
+        if (Array.isArray(value)) return value;
+
+        if (typeof value === "string") {
+            try {
+                // first parse once
+                const parsed = JSON.parse(value);
+
+                // sometimes the parsed result is still a string (double encoded!)
+                if (typeof parsed === "string") {
+                    try {
+                        const doubleParsed = JSON.parse(parsed);
+                        return Array.isArray(doubleParsed) ? doubleParsed : [];
+                    } catch {
+                        return [];
+                    }
+                }
+
+                return Array.isArray(parsed) ? parsed : [];
+            } catch {
+                return [];
+            }
+        }
+
+        return [];
+    }
+
+
+    async function handleOpen(formInput) {
+        console.log("FomrInpit is:", formInput);
+        if (formInput === null) {
+            // Create new form
+            setActive({
+                title: '無題のフォーム',
+                description: '',
+                theme: 'default',
+                fields: [],
+                questions: [],
+                allow_multiple_responses: true,
+                require_email: false
+            });
+        } else {
+            try {
+                // If we get just the ID, we need to load the full form
+                const formId = typeof formInput === 'object' ? formInput.id : formInput;
+                console.log("Fomr id is:", formId);
+                // Make sure we load fresh from backend
+                // const { form: freshForm } = await getForm(formId);
+                const freshForm = await getForm(formId);
+
+                console.log("Fresh Form is:", freshForm);
+                if (!freshForm) {
+                    throw new Error('フォームが見つかりません');
+                }
+
+                // Map the questions to fields format
+                const mappedForm = {
+                    ...freshForm,
+                    fields: freshForm.fields.map(field => ({
+                        ...field,
+                        uid: field.id.toString(), // Ensure each field has a unique ID for frontend
+                        id: field.id, // Keep the original ID for backend reference
+                        type: field.type || 'short_answer',
+                        required: !!field.required,
+                        placeholder: field.placeholder || '',
+                        options: field.options || [],
+                        content: field.content || '',
+                        max_images: field.max_images || 1,
+                        checkbox_options: field.checkbox_options || [],
+                        choice_options: field.choice_options || [],
+                        image_only: field.image_only || false,
+                        enable_checkboxes: field.enable_checkboxes || false,
+                        enable_multiple_choice: field.enable_multiple_choice || false,
+                        multiple_choice_label: field.multiple_choice_label || '',
+                        multiple_choice_options: field.multiple_choice_options || [],
+                        image_options: field.image_options || []
+                    }))
+                };
+                console.log("mapped form is:", mappedForm);
+                setActive(mappedForm);
+            } catch (error) {
+                console.error('Error loading form:', error);
+                alert('フォームの読み込みに失敗しました。フォームが存在するかどうかを確認してください。');
+            }
+        }
+    }
+
+    return (
+        <div className="min-h-screen">
+            <header className="bg-white shadow p-4 flex items-center justify-between">
+                <div>
+                    <h2 className="text-xl font-semibold">管理者ページ</h2>
+                    <div className="text-sm text-slate-500">ログイン中：{user?.name}</div>
+                </div>
+                <div className="flex gap-2">
+                    <button onClick={() => { clearAuth(); onLogout(); }} className="px-3 py-1 border rounded">ログアウト</button>
+                </div>
+            </header>
+
+            <main className="p-6 grid grid-cols-12 gap-6">
+                <aside className="col-span-3">
+                    <FormsList forms={forms} onOpen={handleOpen} onDelete={handleDelete} onViewResponses={(f) => setShowResponsesFor(f)} />
+                </aside>
+
+                <section className="col-span-9">
+                    <FormBuilderPanel form={active} onSave={handleSave} onNewSaved={(f) => setActive(f)} />
+                </section>
+            </main>
+
+            {showResponsesFor && <ResponsesModal form={showResponsesFor} onClose={() => setShowResponsesFor(null)} />}
+        </div>
+    )
+}
