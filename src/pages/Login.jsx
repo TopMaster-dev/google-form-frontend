@@ -28,12 +28,12 @@ export default function Login({ onLogin }) {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-[#F9F6EF]">
             <div className="max-w-2xl w-full bg-white rounded-xl shadow p-6">
-                <h1 className="text-2xl font-semibold mb-4">ログイン</h1>
+                <h1 className="text-2xl font-semibold mb-4 text-[#191919]">{isRegister ? '新規登録' : 'ログイン'}</h1>
                 <form onSubmit={handleSubmit}>
                     {isRegister && (
-                        <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" className="w-full p-2 border rounded mb-3" />
+                        <input value={name} onChange={e => setName(e.target.value)} placeholder="名前" className="w-full p-2 border rounded mb-3" />
                     )}
                     <input
                         type="email"
@@ -45,8 +45,8 @@ export default function Login({ onLogin }) {
                     />
                     <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="パスワード" className="w-full p-2 border rounded mb-3" />
                     <div className="flex gap-2">
-                        <button className="bg-purple-600 text-white px-4 py-2 rounded">{isRegister ? '登録' : 'ログイン'}</button>
-                        <button type="button" onClick={() => setIsRegister(!isRegister)} className="px-4 py-2 border rounded">{isRegister ? 'アカウントをお持ちですか？' : '新規登録'}</button>
+                        <button className="bg-[#215261] text-white px-4 py-2 rounded">{isRegister ? '登録' : 'ログイン'}</button>
+                        <button type="button" onClick={() => setIsRegister(!isRegister)} className="px-4 py-2 border rounded text-[#191919]">{isRegister ? 'アカウントをお持ちですか？' : '新規登録'}</button>
                     </div>
                     {err && <div className="text-red-500 mt-3">{err}</div>}
                 </form>

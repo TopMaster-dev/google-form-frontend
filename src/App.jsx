@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
 import AdminPanel from './pages/AdminPanel'
 import FormResponse from './pages/FormResponse'
+import Top from './pages/Top'
+import ProfileMovieForm from './pages/ProfileMovieForm'
 import { getUser } from './utils/auth'
 
 export default function App() {
@@ -15,8 +17,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public landing page */}
+        <Route path="/top" element={<Top />} />
+
         {/* Public form routes */}
         <Route path="/forms/:formId" element={<FormResponse />} />
+        <Route path="/profile-movie" element={<ProfileMovieForm />} />
 
         {/* Admin routes */}
         <Route
@@ -49,7 +55,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <Navigate to={user ? "/admin" : "/login"} />
+            <Navigate to="/top" />
           }
         />
       </Routes>
