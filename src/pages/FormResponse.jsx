@@ -674,6 +674,15 @@ export default function FormResponse() {
                                                     }}
                                                 />
                                             )}
+
+                                            {/* section - Display only */}
+                                            {field.type === 'section' && (
+                                                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                                    <div className="text-blue-700">
+                                                        {field.placeholder || 'セクションの内容がここに表示されます。'}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </label>
                                 </div>

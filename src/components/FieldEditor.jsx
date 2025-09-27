@@ -112,10 +112,12 @@ export default function FieldEditor({ field, onChange }) {
         set('options', opts.filter((_, idx) => idx !== i))
     } return (
         <div>
-            <div className="flex items-center gap-2 mb-2">
-                <label className="text-sm">Required</label>
-                <input type="checkbox" checked={!!field.required} onChange={e => set('required', e.target.checked)} />
-            </div>
+            {field.type !== 'section' && (
+                <div className="flex items-center gap-2 mb-2">
+                    <label className="text-sm">Required</label>
+                    <input type="checkbox" checked={!!field.required} onChange={e => set('required', e.target.checked)} />
+                </div>
+            )}
 
             {['short_answer', 'paragraph', 'date', 'time'].includes(field.type) && (
                 <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
@@ -382,6 +384,23 @@ export default function FieldEditor({ field, onChange }) {
                             </div>
                         </div>
                     )}
+                </div>
+            )}
+
+            {field.type === 'section' && (
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-2">セクション内容</label>
+                        <textarea
+                            value={field.placeholder || ''}
+                            onChange={e => set('placeholder', e.target.value)}
+                            placeholder="セクションの内容を入力してください"
+                            className="w-full p-2 border rounded h-24"
+                        />
+                    </div>
+                    <div className="text-sm text-gray-500">
+                        セクションは情報表示用で、回答は必要ありません。
+                    </div>
                 </div>
             )}
 

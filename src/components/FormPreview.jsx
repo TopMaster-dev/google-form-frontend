@@ -172,6 +172,13 @@ export default function FormPreview({ title, description, fields = [] }) {
                                     )}
                                 </div>
                             )}
+                            {f.type === 'section' && (
+                                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                    <div className="text-blue-700">
+                                        {f.placeholder || 'セクションの内容がここに表示されます。'}
+                                    </div>
+                                </div>
+                            )}
                             {f.type === 'image' && (
                                 <div className="relative">
                                     {f.imageUrl ? (

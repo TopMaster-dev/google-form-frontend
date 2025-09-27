@@ -143,7 +143,8 @@ export default function FormBuilderPanel({ form, onSave }) {
             time: 'time',
             file: 'file_upload',
             image: 'image',
-            image_upload: 'image_upload'
+            image_upload: 'image_upload',
+            section: 'section'
         }
         return type // Keep the frontend types as is, no need to map
     }
@@ -160,6 +161,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                     <textarea value={local.description} onChange={e => setLocal({ ...local, description: e.target.value })} placeholder="フォームの説明" className="w-full p-2 border rounded" />
 
                     <div className="flex gap-2 flex-wrap">
+                        <button onClick={() => addQuestion('section')} className="px-3 py-1 border rounded text-sm">セクション</button>
                         <button onClick={() => addQuestion('short_answer')} className="px-3 py-1 border rounded text-sm">短答</button>
                         <button onClick={() => addQuestion('paragraph')} className="px-3 py-1 border rounded text-sm">長答</button>
                         <button onClick={() => addQuestion('multiple_choice')} className="px-3 py-1 border rounded text-sm">複数選択</button>
@@ -177,8 +179,15 @@ export default function FormBuilderPanel({ form, onSave }) {
                             <div key={f.uid} className="p-3 border rounded">
                                 <div className="flex justify-between items-start gap-2">
                                     <div className="flex-1">
-                                        <div className="text-sm text-slate-500 mb-1">質問 {idx + 1} • {f.type.replace('_', ' ')}</div>
-                                        <input value={f.label} onChange={e => updateField(f.uid, { label: e.target.value })} placeholder="質問テキスト" className="w-full p-2 border rounded mb-2" />
+                                        <div className="text-sm text-slate-500 mb-1">
+                                            質問 {idx + 1} • {f.type.replace('_', ' ')}
+                                        </div>
+                                        <input
+                                            value={f.label}
+                                            onChange={e => updateField(f.uid, { label: e.target.value })}
+                                            placeholder={f.type == "section"?"セクションタイトル":"質問テキスト"}
+                                            className="w-full p-2 border rounded mb-2"
+                                        />
                                         <FieldEditor field={f} onChange={(patch) => updateField(f.uid, patch)} />
                                     </div>
                                     <div className="flex flex-col gap-2">
