@@ -1,23 +1,115 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getCategoryForm } from '../api';
 
 export default function Top() {
-    const [selectedMovie, setSelectedMovie] = useState('ボタニカ');
+    const [responses, setResponses] = useState([]);
+    const [selected, setSelected] = useState({
+        1: '',
+        2: '',
+        3: ''
+    });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const movieOptions = [
-        'ボタニカ',
-        'サクラ',
-        'ハナビ',
-        'ユキ',
-        'カエデ',
-        'モミジ'
-    ];
+    useEffect(() => {
+        fetchResponses();
+    }, []);
 
-    const handleProceed = () => {
-        // Navigate to profile movie form page with selected movie
-        navigate(`/profile-movie?movie=${encodeURIComponent(selectedMovie)}`);
+    const fetchResponses = async () => {
+        try {
+            setLoading(true);
+            const data = await getCategoryForm();
+            setResponses(data);
+
+            // Set default selected for each category if available
+            const categories = [1, 2, 3];
+            const newSelected = {};
+            categories.forEach(cat => {
+                const found = data.find(d => String(d.category_id) === String(cat));
+                newSelected[cat] = found ? found.id : '';
+            });
+            setSelected(newSelected);
+        } catch (err) {
+            console.error('Error fetching responses:', err);
+            setError('Failed to load response data');
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const handleProceed = (categoryId) => {
+        const movieId = selected[categoryId];
+        if (!movieId) return;
+        navigate(`/forms/${movieId}`);
+    };
+
+    const renderMovieSection = (categoryId, label) => (
+        <div className="space-y-4 mb-16">
+            {/* Movie type display */}
+            <div className="bg-[#E6B372] p-4">
+                <div className="text-center">
+                    <span className="text-lg font-semibold text-white">
+                        {label}
+                    </span>
+                </div>
+            </div>
+            {/* Movie selection dropdown */}
+            <div className="flex items-center gap-4">
+                <div className="flex-1">
+                    <select
+                        value={selected[categoryId]}
+                        onChange={e => setSelected(s => ({ ...s, [categoryId]: e.target.value }))}
+                        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
+                        style={{
+                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
+                            backgroundPosition: 'right 12px center',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: '16px'
+                        }}
+                    >
+                        {responses.filter(data => String(data.category_id) === String(categoryId)).length === 0 ? (
+                            <option value="">選択してください</option>
+                        ) : (
+                            responses
+                                .filter(data => String(data.category_id) === String(categoryId))
+                                .map(data => (
+                                    <option key={data.id} value={data.id}>
+                                        {data.title}
+                                    </option>
+                                ))
+                        )}
+                    </select>
+                </div>
+                {/* Proceed button */}
+                <button
+                    onClick={() => handleProceed(categoryId)}
+                    className={`px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center gap-2 ${
+                        selected[categoryId] 
+                            ? 'bg-[#215261] hover:bg-teal-700 text-white' 
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                    disabled={!selected[categoryId]}
+                >
+                    入力へ進む
+                    <svg 
+                        className="w-5 h-5" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                    >
+                        <path 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round" 
+                            strokeWidth={2} 
+                            d="M9 5l7 7-7 7" 
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-[#F9F6EF] py-8">
@@ -46,169 +138,9 @@ export default function Top() {
                         <h2 className="text-2xl font-bold text-[#D6939D] mb-6 text-center">
                             ご注文のムービーをお選びください
                         </h2>
-
-                        <div className="space-y-4 mb-16 mt-10">
-                            {/* Movie type display */}
-                            <div className="bg-[#E6B372] p-4">
-                                <div className="text-center">
-                                    <span className="text-lg font-semibold text-white">
-                                        オープニングムービー
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Movie selection dropdown */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1">
-                                    <select
-                                        value={selectedMovie}
-                                        onChange={(e) => setSelectedMovie(e.target.value)}
-                                        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
-                                        style={{
-                                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                                            backgroundPosition: 'right 12px center',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: '16px'
-                                        }}
-                                    >
-                                        {movieOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Proceed button */}
-                                <button
-                                    onClick={handleProceed}
-                                    className="bg-[#215261] hover:bg-teal-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center gap-2"
-                                >
-                                    入力へ進む
-                                    <svg 
-                                        className="w-5 h-5" 
-                                        fill="none" 
-                                        stroke="currentColor" 
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M9 5l7 7-7 7" 
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="space-y-4 mb-16">
-                            {/* Movie type display */}
-                            <div className="bg-[#E6B372] p-4">
-                                <div className="text-center">
-                                    <span className="text-lg font-semibold text-white">
-                                        プロフィールムービ
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Movie selection dropdown */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1">
-                                    <select
-                                        value={selectedMovie}
-                                        onChange={(e) => setSelectedMovie(e.target.value)}
-                                        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
-                                        style={{
-                                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                                            backgroundPosition: 'right 12px center',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: '16px'
-                                        }}
-                                    >
-                                        {movieOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Proceed button */}
-                                <button
-                                    onClick={handleProceed}
-                                    className="bg-[#215261] hover:bg-teal-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center gap-2"
-                                >
-                                    入力へ進む
-                                    <svg 
-                                        className="w-5 h-5" 
-                                        fill="none" 
-                                        stroke="currentColor" 
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M9 5l7 7-7 7" 
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="space-y-4">
-                            {/* Movie type display */}
-                            <div className="bg-[#E6B372] p-4">
-                                <div className="text-center">
-                                    <span className="text-lg font-semibold text-white">
-                                        エンドロール・レタームービーその他
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Movie selection dropdown */}
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1">
-                                    <select
-                                        value={selectedMovie}
-                                        onChange={(e) => setSelectedMovie(e.target.value)}
-                                        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
-                                        style={{
-                                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
-                                            backgroundPosition: 'right 12px center',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: '16px'
-                                        }}
-                                    >
-                                        {movieOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                {/* Proceed button */}
-                                <button
-                                    onClick={handleProceed}
-                                    className="bg-[#215261] hover:bg-teal-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center gap-2"
-                                >
-                                    入力へ進む
-                                    <svg 
-                                        className="w-5 h-5" 
-                                        fill="none" 
-                                        stroke="currentColor" 
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path 
-                                            strokeLinecap="round" 
-                                            strokeLinejoin="round" 
-                                            strokeWidth={2} 
-                                            d="M9 5l7 7-7 7" 
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+                        {renderMovieSection(1, 'オープニングムービー')}
+                        {renderMovieSection(2, 'プロフィールムービ')}
+                        {renderMovieSection(3, 'エンドロール・レタームービーその他')}
                     </div>
 
                     {/* Additional info */}

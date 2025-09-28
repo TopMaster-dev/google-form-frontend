@@ -30,12 +30,12 @@ export async function getMyForms() {
     return response.data
 }
 
-export async function createForm(payload) {
+export async function createForm(payload) {    
     const response = await instance.post('/forms', payload)
     return response.data
 }
 
-export async function updateForm(formId, payload) {
+export async function updateForm(formId, payload) {    
     const response = await instance.put(`/forms/${formId}`, payload)
     return response.data
 }
@@ -94,6 +94,11 @@ export async function fetchResponses(formId) {
     return response.data
 }
 
+export async function getCategoryForm() {
+    const response = await instance.get(`/category`);
+    return response.data;
+}
+
 export function exportCSV(formId) {
     return `${instance.defaults.baseURL}/forms/${formId}/csv`
 }
@@ -111,7 +116,8 @@ const api = {
     submitForm,
     getResponses,
     fetchResponses,
-    exportCSV
+    exportCSV,
+    getCategoryForm
 }
 
 export default api

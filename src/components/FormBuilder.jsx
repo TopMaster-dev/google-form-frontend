@@ -160,6 +160,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                             onChange={e => setLocal({ ...local, category_id: e.target.value })}
                             className="w-full p-2 border rounded"
                         >
+                            <option value="0">カテゴリを選択</option>
                             <option value="1">オープニングムービー</option>
                             <option value="2">プロフィールムービ</option>
                             <option value="3">エンドロール・レタームービーその他</option>
