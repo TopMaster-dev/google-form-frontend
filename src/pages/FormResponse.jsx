@@ -12,7 +12,6 @@ export default function FormResponse() {
     const [submitted, setSubmitted] = useState(false);
     const [view, setView] = useState("form"); // "form" | "success"
 
-
     useEffect(() => {
         loadForm();
     }, [formId]);
@@ -269,8 +268,12 @@ export default function FormResponse() {
                             {form.fields.map((field, idx) => (
                                 <div key={field.uid} className="space-y-2">
                                     <label className="block">
-                                        <div className="font-medium text-gray-700">
-                                            {idx + 1}. {field.label}
+                                        <div
+                                            className="font-medium text-gray-700"
+                                            {...(field.type === 'section' ? { id: `section${idx}` } : {})}
+                                        >
+                                            {/* {idx + 1}. {field.label} */}
+                                            {field.type == 'section'? 'セクション ー' + field.label:field.label}
                                             {field.required && (
                                                 <span className="text-red-500 ml-1">*</span>
                                             )}
@@ -676,10 +679,10 @@ export default function FormResponse() {
                                             )}
 
                                             {/* section - Display only */}
-                                            {field.type === 'section' && (
+                                            {field.type === 'section' && field.placeholder !== '' && (
                                                 <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
                                                     <div className="text-blue-700">
-                                                        {field.placeholder || 'セクションの内容がここに表示されます。'}
+                                                        {field.placeholder}
                                                     </div>
                                                 </div>
                                             )}

@@ -19,7 +19,7 @@ function emptyForm() {
 export default function FormBuilderPanel({ form, onSave }) {
     const [local, setLocal] = useState(form || emptyForm())
 
-    useEffect(() => {
+    useEffect(() => {        
         if (form) {
             setLocal(form)
         } else if (!local.fields?.length) {
@@ -89,6 +89,7 @@ export default function FormBuilderPanel({ form, onSave }) {
             const payload = {
                 id: local.id,
                 title: local.title || '無題のフォーム',
+                category_id: local.category_id || null,
                 description: local.description || '',
                 theme: local.theme || 'default',
                 allow_multiple_responses: local.allow_multiple_responses ?? true,
@@ -122,7 +123,6 @@ export default function FormBuilderPanel({ form, onSave }) {
                     enableAdminImages: f.enableAdminImages || false
                 }))
             };
-
             await onSave(payload);
             alert('フォームが保存されました。');
         } catch (error) {
@@ -153,6 +153,18 @@ export default function FormBuilderPanel({ form, onSave }) {
         <div className="grid grid-cols-12 gap-4">
             <div className="col-span-6">
                 <div className="bg-white p-4 rounded shadow space-y-4">
+                    <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">カテゴリ</label>
+                        <select
+                            value={local.category_id || ''}
+                            onChange={e => setLocal({ ...local, category_id: e.target.value })}
+                            className="w-full p-2 border rounded"
+                        >
+                            <option value="1">オープニングムービー</option>
+                            <option value="2">プロフィールムービ</option>
+                            <option value="3">エンドロール・レタームービーその他</option>
+                        </select>
+                    </div>
                     <div className="flex items-center gap-3">
                         <input value={local.title} onChange={e => setLocal({ ...local, title: e.target.value })} placeholder="フォームタイトル" className="text-xl font-semibold w-full p-2 border rounded" />
                         <button onClick={save} className="bg-purple-600 text-white px-4 py-2 rounded">保存</button>

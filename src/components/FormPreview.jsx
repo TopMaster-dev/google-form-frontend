@@ -43,7 +43,8 @@ export default function FormPreview({ title, description, fields = [] }) {
                 {description && <div className="text-sm text-slate-600">{description}</div>}
             </div>
 
-            <style jsx>{`
+            <style>
+                {`
                 @keyframes fadeIn {
                     from { opacity: 0; transform: translateY(-20px); }
                     to { opacity: 1; transform: translateY(0); }
@@ -52,7 +53,8 @@ export default function FormPreview({ title, description, fields = [] }) {
                     from { opacity: 1; transform: translateY(0); }
                     to { opacity: 0; transform: translateY(-20px); }
                 }
-            `}</style>
+                `}
+            </style>
 
             <div className="space-y-6">
                 {fields.map((f, idx) => (
