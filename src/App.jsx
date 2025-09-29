@@ -18,7 +18,14 @@ export default function App() {
   const [user, setUser] = useState(getUser())
 
   useEffect(() => {
-    setUser(getUser())
+    // sync user state when token changes (storage events from other tabs)
+    const onStorage = (e) => {
+      if (e.key === 'gfc_token') {
+        setUser(getUser())
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
   }, [])
 
   return (
@@ -29,49 +36,62 @@ export default function App() {
       }}
     >
       <HeaderRenderer />
-      <Routes>
-        {/* Public landing page */}
-        <Route path="/top" element={<Top />} />
+      {(() => {
+        const authed = !!localStorage.getItem('gfc_token')
+        if (!authed) {
+          return (
+            <Routes>
+              <Route path="/login" element={<Login onLogin={() => setUser(getUser())} />} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          )
+        }
+        return (
+          <Routes>
+            {/* Public landing page (requires auth) */}
+            <Route path="/top" element={<Top />} />
 
-        {/* Public form routes */}
-        <Route path="/forms/:formId" element={<FormResponse />} />
-        <Route path="/general/forms/:formId" element={<FormGeneral />} />
+            {/* Form routes */}
+            <Route path="/forms/:formId" element={<FormResponse />} />
+            <Route path="/general/forms/:formId" element={<FormGeneral />} />
 
-        {/* Admin routes */}
-        <Route
-          path="/admin/*"
-          element={
-            user ? (
-              <AdminPanel
-                user={user}
-                onLogout={() => { localStorage.clear(); setUser(null) }}
-              />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+            {/* Admin routes */}
+            <Route
+              path="/admin/*"
+              element={(() => {
+                const u = getUser()
+                console.log(u);
+                
+                return u && u.role === 'admin' ? (
+                  <AdminPanel
+                    user={u}
+                    onLogout={() => { localStorage.clear(); setUser(null) }}
+                  />
+                ) : (
+                  <Navigate to="/top" replace />
+                )
+              })()}
+            />
 
-        {/* Auth routes */}
-        <Route
-          path="/login"
-          element={
-            user ? (
-              <Navigate to="/admin" />
-            ) : (
-              <Login onLogin={() => setUser(getUser())} />
-            )
-          }
-        />
+            {/* Login should redirect away when authed */}
+            <Route
+              path="/login"
+              element={(() => {
+                const u = getUser()
+                return u && u.role === 'admin'
+                  ? <Navigate to="/admin" replace />
+                  : <Navigate to="/top" replace />
+              })()}
+            />
 
-        {/* Default redirect */}
-        <Route
-          path="/"
-          element={
-            <Navigate to="/top" />
-          }
-        />
-      </Routes>
+            {/* Default redirect */}
+            <Route path="/" element={<Navigate to="/top" replace />} />
+            <Route path="*" element={<Navigate to="/top" replace />} />
+          </Routes>
+        )
+      })()}
     </BrowserRouter>
   )
 }
+
+// Removed RequireAuth; we render separate route sets based on auth state

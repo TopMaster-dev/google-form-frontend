@@ -1,7 +1,13 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Header() {
+    const isLoggedIn = !!localStorage.getItem('gfc_token')
+
+    function handleLogout() {
+        localStorage.clear();
+        window.location.href = '/login';
+    }
     return (
         <header className="bg-white border-b">
             <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between h-[80px]">
@@ -9,8 +15,12 @@ export default function Header() {
                     <span className="text-lg font-semibold text-[#215261]">ムービー提出システム</span>
                 </Link>
                 <nav className="flex items-center gap-4 text-sm text-gray-600">
-                    <Link to="/top" className="hover:text-[#215261]">トップ</Link>
-                    <Link to="/login" className="hover:text-[#215261]">ログイン</Link>
+                    <Link to="/top" className="hover:text-[#215261]">トップページ</Link>
+                    {isLoggedIn ? (
+                        <button onClick={handleLogout} className="hover:text-[#215261]">ログアウト</button>
+                    ) : (
+                        <Link to="/login" className="hover:text-[#215261]">ログイン</Link>
+                    )}
                 </nav>
             </div>
         </header>
