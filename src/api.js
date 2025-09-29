@@ -99,6 +99,16 @@ export async function getCategoryForm() {
     return response.data;
 }
 
+export async function getCategoryFormID(formId) {
+    const response = await instance.get(`/category/${formId}`);
+    return response.data;
+}
+
+export async function getGeneralFormID() {    
+    const response = await instance.post(`/category/general`);
+    return response.data;
+}
+
 export function exportCSV(formId) {
     return `${instance.defaults.baseURL}/forms/${formId}/csv`
 }
@@ -117,7 +127,9 @@ const api = {
     getResponses,
     fetchResponses,
     exportCSV,
-    getCategoryForm
+    getCategoryForm,
+    getCategoryFormID,
+    getGeneralFormID
 }
 
 export default api

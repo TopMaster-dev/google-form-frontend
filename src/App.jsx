@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Login from './pages/Login'
 import AdminPanel from './pages/AdminPanel'
 import FormResponse from './pages/FormResponse'
+import FormGeneral from './pages/FormGeneral'
 import Top from './pages/Top'
-import ProfileMovieForm from './pages/ProfileMovieForm'
+import Header from './pages/header'
 import { getUser } from './utils/auth'
+
+function HeaderRenderer() {
+  const location = useLocation()
+  if (location.pathname.startsWith('/admin')) return null
+  return <Header />
+}
 
 export default function App() {
   const [user, setUser] = useState(getUser())
@@ -21,13 +28,14 @@ export default function App() {
         v7_relativeSplatPath: true
       }}
     >
+      <HeaderRenderer />
       <Routes>
         {/* Public landing page */}
         <Route path="/top" element={<Top />} />
 
         {/* Public form routes */}
         <Route path="/forms/:formId" element={<FormResponse />} />
-        <Route path="/profile-movie" element={<ProfileMovieForm />} />
+        <Route path="/general/forms/:formId" element={<FormGeneral />} />
 
         {/* Admin routes */}
         <Route
