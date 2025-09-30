@@ -231,8 +231,8 @@ export default function FormGeneral() {
 
                 {view === "success" ? (
                     <div className="p-8 text-center">
-                        <h2 className="text-2xl font-bold text-green-600 mb-4">Response Submitted!</h2>
-                        <p className="text-gray-700 mb-6">Thank you for your response.</p>
+                        <h2 className="text-2xl font-bold text-green-600 mb-4">ご回答ありがとうございました！</h2>
+                        <p className="text-gray-700 mb-6">ご回答いただきありがとうございました。</p>
                         <button
                             onClick={() => {
                                 setSubmitted(false);
@@ -241,7 +241,7 @@ export default function FormGeneral() {
                             }}
                             className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
                         >
-                            Submit another response
+                            もう一度回答する
                         </button>
                     </div>
                 ) : (
@@ -253,7 +253,7 @@ export default function FormGeneral() {
                                     onClick={() => setError(null)}
                                     className="ml-3 text-blue-600 underline"
                                 >
-                                    Dismiss
+                                    閉じる
                                 </button>
                             </div>
                         )}

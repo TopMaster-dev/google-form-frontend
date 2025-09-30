@@ -59,9 +59,7 @@ export default function App() {
             <Route
               path="/admin/*"
               element={(() => {
-                const u = getUser()
-                console.log(u);
-                
+                const u = getUser()                
                 return u && u.role === 'admin' ? (
                   <AdminPanel
                     user={u}
