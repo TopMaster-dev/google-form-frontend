@@ -66,7 +66,6 @@ export default function AdminPanel({ user, onLogout }) {
 
 
     async function handleOpen(formInput) {
-        console.log("FomrInpit is:", formInput);
         if (formInput === null) {
             // Create new form
             setActive({
@@ -82,12 +81,9 @@ export default function AdminPanel({ user, onLogout }) {
             try {
                 // If we get just the ID, we need to load the full form
                 const formId = typeof formInput === 'object' ? formInput.id : formInput;
-                console.log("Fomr id is:", formId);
                 // Make sure we load fresh from backend
                 // const { form: freshForm } = await getForm(formId);
                 const freshForm = await getForm(formId);
-
-                console.log("Fresh Form is:", freshForm);
                 if (!freshForm) {
                     throw new Error('フォームが見つかりません');
                 }
@@ -115,7 +111,6 @@ export default function AdminPanel({ user, onLogout }) {
                         image_options: field.image_options || []
                     }))
                 };
-                console.log("mapped form is:", mappedForm);
                 setActive(mappedForm);
             } catch (error) {
                 console.error('Error loading form:', error);

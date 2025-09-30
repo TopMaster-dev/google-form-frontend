@@ -29,8 +29,6 @@ export default function FormGeneral() {
                 choice_options: typeof f.choice_options === "string" ? JSON.parse(f.choice_options) : f.choice_options,
                 adminImages: typeof f.adminImages === "string" ? JSON.parse(f.adminImages) : (f.adminImages || []),
             }));
-
-            console.log('Form loaded with fields:', formData.fields);
             setForm(formData);
         } catch (err) {
             setError(err.response?.data?.message || 'Form not found');
@@ -40,13 +38,11 @@ export default function FormGeneral() {
     }
 
     function handleResponse(fieldId, value) {
-        console.log(`Updating response for field ${fieldId}:`, value); // Debug log
         setResponses(prev => {
             const updated = {
                 ...prev,
                 [fieldId]: value
             };
-            console.log('Updated responses state:', updated); // Debug log
             return updated;
         });
     }
@@ -55,9 +51,6 @@ export default function FormGeneral() {
     // Replace your entire handleSubmit function with this:
     async function handleSubmit(e) {
         e.preventDefault();
-
-        // Debug: Log current responses state
-        console.log('Current responses state on submit:', responses);
 
         // Validate required fields before submission
         const missingFields = form.fields
@@ -89,8 +82,6 @@ export default function FormGeneral() {
                 return true;
             });
 
-            console.log('Valid responses:', validResponses);
-
             const formattedAnswers = [];
 
             for (const [fieldId, value] of validResponses) {
@@ -101,12 +92,8 @@ export default function FormGeneral() {
 
                 const field = form.fields.find(f => f.uid == fieldId); // Use == for flexible matching
                 if (!field) {
-                    console.log(`Field not found for fieldId: ${fieldId}`);
-                    console.log('Available fields:', form.fields.map(f => ({ uid: f.uid, id: f.id })));
                     continue;
                 }
-
-                console.log(`Processing field ${fieldId}, type: ${field.type}`);
 
                 let formattedAnswer = {
                     questionId: field.uid, // Use field.id as questionId (this is the database ID)
@@ -120,7 +107,6 @@ export default function FormGeneral() {
                         value.forEach((file, idx) => {
                             const fileKey = `image_${field.uid}_${idx}`;
                             formData.append(fileKey, file);
-                            console.log(`Appending image file: ${fileKey}`, file.name);
                         });
 
                         formattedAnswer.imageData = value.map((file, idx) => ({
@@ -148,7 +134,6 @@ export default function FormGeneral() {
                         value.forEach((file, idx) => {
                             const fileKey = `file_${field.uid}_${idx}`;
                             formData.append(fileKey, file);
-                            console.log(`Appending regular file: ${fileKey}`, file.name);
                         });
                         formattedAnswer.fileData = value.map((file, idx) => ({
                             name: file.name,
@@ -171,15 +156,8 @@ export default function FormGeneral() {
             // Add form metadata
             formData.append('formId', formId);
             formData.append('submissionTimestamp', new Date().toISOString());
-
-            console.log("Answers JSON:", answersJson);
-            console.log("Form data is: ", formData);
-            // Debug FormData contents
-            // logFormData(formData);
-
             // Submit to API
             const response = await api.submitForm(formId, formData);
-            console.log('Form submission successful:', response);
 
             setSubmitted(true);
             setResponses({});
@@ -286,7 +264,6 @@ export default function FormGeneral() {
                                                     value={responses[field.uid] || ''}
                                                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                     onChange={e => {
-                                                        console.log(`Short answer change for ${field.uid}:`, e.target.value);
                                                         handleResponse(field.uid, e.target.value);
                                                     }}
                                                 />
@@ -301,7 +278,6 @@ export default function FormGeneral() {
                                                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                     rows={4}
                                                     onChange={e => {
-                                                        console.log(`Paragraph change for ${field.uid}:`, e.target.value);
                                                         handleResponse(field.uid, e.target.value);
                                                     }}
                                                 />
@@ -318,7 +294,6 @@ export default function FormGeneral() {
                                                                 required={field.required}
                                                                 checked={responses[field.uid] === option}
                                                                 onChange={() => {
-                                                                    console.log(`Multiple choice change for ${field.uid}:`, option);
                                                                     handleResponse(field.uid, option);
                                                                 }}
                                                             />
@@ -361,7 +336,6 @@ export default function FormGeneral() {
                                                                     } else {
                                                                         updated = current.filter(v => v !== option);
                                                                     }
-                                                                    console.log(`Checkbox change for ${field.uid}:`, updated);
                                                                     handleResponse(field.uid, updated);
                                                                 }}
                                                             />
@@ -389,7 +363,6 @@ export default function FormGeneral() {
                                                                 const combined = [...existing, ...newFiles];
                                                                 const limited = field.max_images ?
                                                                     combined.slice(0, field.max_images) : combined;
-                                                                console.log(`File upload change for ${field.uid}:`, limited);
                                                                 handleResponse(field.uid, limited);
                                                             }}
                                                         />
@@ -431,7 +404,6 @@ export default function FormGeneral() {
                                                             const existing = responses[field.uid] || [];
                                                             const merged = [...existing, ...newFiles];
                                                             const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                            console.log(`Image upload change for ${field.uid}:`, limited);
                                                             handleResponse(field.uid, limited);
                                                         }}
                                                     />
@@ -556,7 +528,6 @@ export default function FormGeneral() {
                                                                 const existing = responses[field.uid] || [];
                                                                 const merged = [...existing, ...newFiles];
                                                                 const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                                console.log(`Image upload change for ${field.uid}:`, limited);
                                                                 handleResponse(field.uid, limited);
                                                             }}
                                                         />
@@ -655,7 +626,6 @@ export default function FormGeneral() {
                                                     value={responses[field.uid] || ''}
                                                     className="p-2 border rounded"
                                                     onChange={e => {
-                                                        console.log(`Date change for ${field.uid}:`, e.target.value);
                                                         handleResponse(field.uid, e.target.value);
                                                     }}
                                                 />
@@ -669,7 +639,6 @@ export default function FormGeneral() {
                                                     value={responses[field.uid] || ''}
                                                     className="p-2 border rounded"
                                                     onChange={e => {
-                                                        console.log(`Time change for ${field.uid}:`, e.target.value);
                                                         handleResponse(field.uid, e.target.value);
                                                     }}
                                                 />

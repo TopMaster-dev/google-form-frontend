@@ -57,10 +57,8 @@ export async function getFormByShare(formId) {
 }
 
 export async function submitForm(formId, formData) {
-    console.log('Form data in api.js:', formData);
 
     // Debug FormData contents
-    console.log('FormData contents in api.js:');
     for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
     }
@@ -111,7 +109,6 @@ export async function getGeneralFormID() {
 
 // export async function exportCSV() {    
 //     const reponse = await instance.get(`/csv`);
-//     console.log(reponse);
     
 //     return true;
 // }

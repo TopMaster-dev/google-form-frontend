@@ -71,9 +71,7 @@ export default function FormResponse() {
 
             setForm(formData);
             setCategory(categoryData);
-            setGeneral(generalData);
-            console.log(generalData);
-            
+            setGeneral(generalData);            
         } catch (err) {
             setError(err.response?.data?.message || 'Form not found');
         } finally {
@@ -82,13 +80,11 @@ export default function FormResponse() {
     }
 
     function handleResponse(fieldId, value) {
-        console.log(`Updating response for field ${fieldId}:`, value); // Debug log
         setResponses(prev => {
             const updated = {
                 ...prev,
                 [fieldId]: value
             };
-            console.log('Updated responses state:', updated); // Debug log
             return updated;
         });
     }
@@ -97,9 +93,6 @@ export default function FormResponse() {
     // Replace your entire handleSubmit function with this:
     async function handleSubmit(e) {
         e.preventDefault();
-
-        // Debug: Log current responses state
-        console.log('Current responses state on submit:', responses);
 
         // Validate required fields before submission
         const missingFields = form.fields
@@ -131,13 +124,9 @@ export default function FormResponse() {
                 return true;
             });
 
-            console.log('Valid responses:', validResponses);
-
             const formattedAnswers = [];
 
-            for (const [fieldId, value] of validResponses) {
-                console.log(fieldId, value);
-                
+            for (const [fieldId, value] of validResponses) {                
                 // Skip checkbox and choice extensions - they're handled with their parent
                 if (fieldId.includes('_checkboxes') || fieldId.includes('_choice')) {
                     continue;
@@ -146,17 +135,10 @@ export default function FormResponse() {
                 let field = form.fields.find(f => f.uid == fieldId); // Use == for flexible matching
                 if (!field) {
                     field = general.flatMap(form => form.fields).find(f => f.uid == fieldId);
-                    if (!field) {
-                        console.log(`Field not found for fieldId: ${fieldId}`);
-                        console.log('Available fields:', [
-                            ...form.fields.map(f => ({ uid: f.uid, id: f.id })),
-                            ...general.flatMap(form => form.fields).map(f => ({ uid: f.uid, id: f.id }))
-                        ]);
-                        continue;
+                if (!field) {
+                    continue;
                     }
                 }
-
-                console.log(`Processing field ${fieldId}, type: ${field.type}`);
 
                 let formattedAnswer = {
                     questionId: field.uid, // Use field.id as questionId (this is the database ID)
@@ -170,7 +152,6 @@ export default function FormResponse() {
                         value.forEach((file, idx) => {
                             const fileKey = `image_${field.uid}_${idx}`;
                             formData.append(fileKey, file);
-                            console.log(`Appending image file: ${fileKey}`, file.name);
                         });
 
                         formattedAnswer.imageData = value.map((file, idx) => ({
@@ -198,7 +179,6 @@ export default function FormResponse() {
                         value.forEach((file, idx) => {
                             const fileKey = `file_${field.uid}_${idx}`;
                             formData.append(fileKey, file);
-                            console.log(`Appending regular file: ${fileKey}`, file.name);
                         });
                         formattedAnswer.fileData = value.map((file, idx) => ({
                             name: file.name,
@@ -230,17 +210,9 @@ export default function FormResponse() {
                 formData.append('userEmail', currentUser.email || '');
                 formData.append('userRole', currentUser.role || '');
             }
-
-            console.log("Answers JSON:", answersJson);
-            console.log("Form data is: ", formData);
-            // Debug FormData contents
-            // logFormData(formData);
-            console.log(formId, formData);
-            
-            
+          
             // Submit to API
             const response = await api.submitForm(formId, formData);
-            console.log('Form submission successful:', response);
             alert('ご回答ありがとうございました！')
 
             setSubmitted(true);
@@ -282,7 +254,7 @@ export default function FormResponse() {
     if (!form) return null;
 
     return (
-        <div>
+            <div>
             <div className="min-h-screen bg-[#F9F6EF] py-16">
                 <div className="max-w-4xl mx-auto px-4">
                     {/* Main Title */}
@@ -312,7 +284,7 @@ export default function FormResponse() {
                             </div>
                             <div className="text-sm text-gray-600 mt-2">サンプルムービー</div>
                         </div>
-                    </div>
+            </div>
 
                     {/* Information Section */}
                     <div className="mb-8">
@@ -453,42 +425,42 @@ export default function FormResponse() {
             <div className="min-h-screen bg-gray-50 py-8 bg-[#F9F6EF] pb-24">
                 <div className="max-w-3xl mx-auto bg-white rounded-lg shadow">
 
-                    {view === "success" ? (
-                        <div className="p-8 text-center">
+                {view === "success" ? (
+                    <div className="p-8 text-center">
                             <h2 className="text-2xl font-bold text-green-600 mb-4">ご回答ありがとうございました！</h2>
                             <p className="text-gray-700 mb-6">ご回答いただきありがとうございました。</p>
-                            <button
-                                onClick={() => {
-                                    setSubmitted(false);
-                                    setResponses({});
-                                    setView("form"); // switch back to form
-                                }}
-                                className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-                            >
+                        <button
+                            onClick={() => {
+                                setSubmitted(false);
+                                setResponses({});
+                                setView("form"); // switch back to form
+                            }}
+                            className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                        >
                                 もう一度回答する
-                            </button>
-                        </div>
-                    ) : (
-                        <>
-                            {error && form && (
-                                <div className="p-4 bg-red-100 text-red-700 rounded m-6">
-                                    {error}
-                                    <button
-                                        onClick={() => setError(null)}
-                                        className="ml-3 text-blue-600 underline"
-                                    >
+                        </button>
+                    </div>
+                ) : (
+                    <>
+                        {error && form && (
+                            <div className="p-4 bg-red-100 text-red-700 rounded m-6">
+                                {error}
+                                <button
+                                    onClick={() => setError(null)}
+                                    className="ml-3 text-blue-600 underline"
+                                >
                                         閉じる
-                                    </button>
-                                </div>
-                            )}
+                                </button>
+                            </div>
+                        )}
 
-                            {/* Debug Panel - Remove this in production */}
-                            {/* <div className="p-4 bg-gray-100 m-6 rounded">
-                                <h3 className="font-bold">Debug Info:</h3>
-                                <p>Current responses: {JSON.stringify(responses, null, 2)}</p>
-                            </div> */}
+                        {/* Debug Panel - Remove this in production */}
+                        {/* <div className="p-4 bg-gray-100 m-6 rounded">
+                            <h3 className="font-bold">Debug Info:</h3>
+                            <p>Current responses: {JSON.stringify(responses, null, 2)}</p>
+                        </div> */}
 
-                            <form onSubmit={handleSubmit} className="p-6 space-y-8">
+                        <form onSubmit={handleSubmit} className="p-6 space-y-8">
                                 {general.map((item, idx) => (
                                     <React.Fragment key={item.id || item.uid || idx}>
                                         <div className="p-6 border-b" id={item.title}>
@@ -499,181 +471,307 @@ export default function FormResponse() {
                                         </div>
                                         {
                                             item.fields.map((field) => (
-                                                <div key={field.uid} className="space-y-2">
-                                                    <label className="block">
+                                <div key={field.uid} className="space-y-2">
+                                    <label className="block">
                                                         <div
                                                             className="font-medium text-gray-700"
                                                             {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                                         >
                                                             {/* {idx + 1}. {field.label} */}
                                                             {field.type == 'section' ? 'セクション ー' + field.label : field.label}
-                                                            {field.required && (
-                                                                <span className="text-red-500 ml-1">*</span>
-                                                            )}
-                                                        </div>
+                                            {field.required && (
+                                                <span className="text-red-500 ml-1">*</span>
+                                            )}
+                                        </div>
 
-                                                        <div className="mt-2">
-                                                            {/* short_answer - FIXED */}
-                                                            {field.type === 'short_answer' && (
-                                                                <input
-                                                                    type="text"
-                                                                    required={field.required}
-                                                                    placeholder={field.placeholder}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                                    onChange={e => {
-                                                                        console.log(`Short answer change for ${field.uid}:`, e.target.value);
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
-                                                            )}
+                                        <div className="mt-2">
+                                            {/* short_answer - FIXED */}
+                                            {field.type === 'short_answer' && (
+                                                <input
+                                                    type="text"
+                                                    required={field.required}
+                                                    placeholder={field.placeholder}
+                                                    value={responses[field.uid] || ''}
+                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                    onChange={e => {
+                                                        handleResponse(field.uid, e.target.value);
+                                                    }}
+                                                />
+                                            )}
 
-                                                            {/* paragraph - FIXED */}
-                                                            {field.type === 'paragraph' && (
-                                                                <textarea
-                                                                    required={field.required}
-                                                                    placeholder={field.placeholder}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                                    rows={4}
-                                                                    onChange={e => {
-                                                                        console.log(`Paragraph change for ${field.uid}:`, e.target.value);
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
-                                                            )}
+                                            {/* paragraph - FIXED */}
+                                            {field.type === 'paragraph' && (
+                                                <textarea
+                                                    required={field.required}
+                                                    placeholder={field.placeholder}
+                                                    value={responses[field.uid] || ''}
+                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                    rows={4}
+                                                    onChange={e => {
+                                                        handleResponse(field.uid, e.target.value);
+                                                    }}
+                                                />
+                                            )}
 
-                                                            {/* multiple_choice - FIXED */}
-                                                            {field.type === 'multiple_choice' && (
-                                                                <div className="space-y-2">
-                                                                    {field.options.map((option, i) => (
-                                                                        <label key={i} className="flex items-center space-x-2">
-                                                                            <input
-                                                                                type="radio"
-                                                                                name={`field_${field.uid}`}
-                                                                                required={field.required}
-                                                                                checked={responses[field.uid] === option}
-                                                                                onChange={() => {
-                                                                                    console.log(`Multiple choice change for ${field.uid}:`, option);
-                                                                                    handleResponse(field.uid, option);
-                                                                                }}
-                                                                            />
-                                                                            <span>{option}</span>
-                                                                        </label>
-                                                                    ))}
-                                                                </div>
-                                                            )}
+                                            {/* multiple_choice - FIXED */}
+                                            {field.type === 'multiple_choice' && (
+                                                <div className="space-y-2">
+                                                    {field.options.map((option, i) => (
+                                                        <label key={i} className="flex items-center space-x-2">
+                                                            <input
+                                                                type="radio"
+                                                                name={`field_${field.uid}`}
+                                                                required={field.required}
+                                                                checked={responses[field.uid] === option}
+                                                                onChange={() => {
+                                                                    handleResponse(field.uid, option);
+                                                                }}
+                                                            />
+                                                            <span>{option}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            )}
 
-                                                            {/* dropdown - NEW */}
-                                                            {field.type === 'dropdown' && (
-                                                                <select
-                                                                    required={field.required}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                                    onChange={e => handleResponse(field.uid, e.target.value)}
-                                                                >
-                                                                    <option value="">選択...</option>
-                                                                    {field.options.map((option, i) => (
-                                                                        <option key={i} value={option}>
-                                                                            {option}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            )}
+                                            {/* dropdown - NEW */}
+                                            {field.type === 'dropdown' && (
+                                                <select
+                                                    required={field.required}
+                                                    value={responses[field.uid] || ''}
+                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                    onChange={e => handleResponse(field.uid, e.target.value)}
+                                                >
+                                                    <option value="">選択...</option>
+                                                    {field.options.map((option, i) => (
+                                                        <option key={i} value={option}>
+                                                            {option}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            )}
 
-                                                            {/* checkboxes - FIXED */}
-                                                            {field.type === 'checkboxes' && (
-                                                                <div className="space-y-2">
-                                                                    {field.options.map((option, i) => (
-                                                                        <label key={i} className="flex items-center space-x-2">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                checked={(responses[field.uid] || []).includes(option)}
-                                                                                onChange={e => {
-                                                                                    const current = responses[field.uid] || [];
-                                                                                    let updated;
-                                                                                    if (e.target.checked) {
-                                                                                        updated = [...current, option];
-                                                                                    } else {
-                                                                                        updated = current.filter(v => v !== option);
-                                                                                    }
-                                                                                    console.log(`Checkbox change for ${field.uid}:`, updated);
-                                                                                    handleResponse(field.uid, updated);
-                                                                                }}
-                                                                            />
-                                                                            <span>{option}</span>
-                                                                        </label>
-                                                                    ))}
-                                                                </div>
-                                                            )}
+                                            {/* checkboxes - FIXED */}
+                                            {field.type === 'checkboxes' && (
+                                                <div className="space-y-2">
+                                                    {field.options.map((option, i) => (
+                                                        <label key={i} className="flex items-center space-x-2">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={(responses[field.uid] || []).includes(option)}
+                                                                onChange={e => {
+                                                                    const current = responses[field.uid] || [];
+                                                                    let updated;
+                                                                    if (e.target.checked) {
+                                                                        updated = [...current, option];
+                                                                    } else {
+                                                                        updated = current.filter(v => v !== option);
+                                                                    }
+                                                                    handleResponse(field.uid, updated);
+                                                                }}
+                                                            />
+                                                            <span>{option}</span>
+                                                        </label>
+                                                    ))}
+                                                </div>
+                                            )}
 
-                                                            {/* file_upload - FIXED */}
-                                                            {field.type === 'file_upload' && (
-                                                                <div className="space-y-4">
-                                                                    {field.content && (
-                                                                        <div className="text-gray-600">{field.content}</div>
-                                                                    )}
-                                                                    <div>
-                                                                        <input
-                                                                            type="file"
-                                                                            multiple={field.max_images > 1}
-                                                                            required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                            className="w-full"
-                                                                            onChange={e => {
-                                                                                const newFiles = Array.from(e.target.files);
-                                                                                const existing = responses[field.uid] || [];
-                                                                                const combined = [...existing, ...newFiles];
-                                                                                const limited = field.max_images ?
-                                                                                    combined.slice(0, field.max_images) : combined;
-                                                                                console.log(`File upload change for ${field.uid}:`, limited);
-                                                                                handleResponse(field.uid, limited);
-                                                                            }}
-                                                                        />
-                                                                    </div>
-
-                                                                    {responses[field.uid]?.length > 0 && (
-                                                                        <div className="mt-3 space-y-2">
-                                                                            {responses[field.uid].map((file, i) => (
-                                                                                <div key={i} className="flex items-center justify-between border p-2 rounded">
-                                                                                    <span className="truncate">{file.name}</span>
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        onClick={() => {
-                                                                                            const updated = responses[field.uid].filter((_, idx) => idx !== i);
-                                                                                            handleResponse(field.uid, updated);
-                                                                                        }}
-                                                                                        className="text-red-600 text-sm"
-                                                                                    >
-                                                                                        ✕
-                                                                                    </button>
-                                                                                </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    )}
-                                                                </div>
-                                                            )}
-
-                                                            {/* image_upload - FIXED */}
-                                                            {/* {field.type === 'image_upload' && (
-                                                    <div className="space-y-4">
+                                            {/* file_upload - FIXED */}
+                                            {field.type === 'file_upload' && (
+                                                <div className="space-y-4">
+                                                    {field.content && (
+                                                        <div className="text-gray-600">{field.content}</div>
+                                                    )}
+                                                    <div>
                                                         <input
                                                             type="file"
-                                                            accept="image/*"
                                                             multiple={field.max_images > 1}
                                                             required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
                                                             className="w-full"
                                                             onChange={e => {
                                                                 const newFiles = Array.from(e.target.files);
                                                                 const existing = responses[field.uid] || [];
+                                                                const combined = [...existing, ...newFiles];
+                                                                const limited = field.max_images ?
+                                                                    combined.slice(0, field.max_images) : combined;
+                                                                handleResponse(field.uid, limited);
+                                                            }}
+                                                        />
+                                                    </div>
+
+                                                    {responses[field.uid]?.length > 0 && (
+                                                        <div className="mt-3 space-y-2">
+                                                            {responses[field.uid].map((file, i) => (
+                                                                <div key={i} className="flex items-center justify-between border p-2 rounded">
+                                                                    <span className="truncate">{file.name}</span>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            const updated = responses[field.uid].filter((_, idx) => idx !== i);
+                                                                            handleResponse(field.uid, updated);
+                                                                        }}
+                                                                        className="text-red-600 text-sm"
+                                                                    >
+                                                                        ✕
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
+
+                                            {/* image_upload - FIXED */}
+                                            {/* {field.type === 'image_upload' && (
+                                                <div className="space-y-4">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        multiple={field.max_images > 1}
+                                                        required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
+                                                        className="w-full"
+                                                        onChange={e => {
+                                                            const newFiles = Array.from(e.target.files);
+                                                            const existing = responses[field.uid] || [];
+                                                            const merged = [...existing, ...newFiles];
+                                                            const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
+                                                            handleResponse(field.uid, limited);
+                                                        }}
+                                                    />
+
+                                                    {responses[field.uid]?.length > 0 && (
+                                                        <div className="mt-3 flex gap-4 flex-wrap">
+                                                            {responses[field.uid].map((file, i) => (
+                                                                <div key={i} className="relative">
+                                                                    <img
+                                                                        src={URL.createObjectURL(file)}
+                                                                        alt={`Preview ${i + 1}`}
+                                                                        className="h-24 w-24 object-cover rounded border"
+                                                                    />
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            const updated = responses[field.uid].filter((_, idx) => idx !== i);
+                                                                            handleResponse(field.uid, updated);
+                                                                        }}
+                                                                        className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded"
+                                                                    >
+                                                                        ✕
+                                                                    </button>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+
+                                                    {(field.checkbox_options?.length > 0 || field.choice_options?.length > 0) && (
+                                                        <div className="mt-4 p-4 bg-gray-50 rounded border">
+                                                            {field.checkbox_options?.length > 0 && (
+                                                                <div className="space-y-2">
+                                                                    <div className="font-medium">Select all that apply:</div>
+                                                                    {field.checkbox_options.map((opt, i) => (
+                                                                        <label key={i} className="flex items-center gap-2">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={(responses[`${field.uid}_checkboxes`] || []).includes(opt.label || opt)}
+                                                                                onChange={e => {
+                                                                                    const current = responses[`${field.uid}_checkboxes`] || [];
+                                                                                    const optionValue = opt.label || opt;
+                                                                                    let updated;
+                                                                                    if (e.target.checked) {
+                                                                                        updated = [...current, optionValue];
+                                                                                    } else {
+                                                                                        updated = current.filter(v => v !== optionValue);
+                                                                                    }
+                                                                                    handleResponse(`${field.uid}_checkboxes`, updated);
+                                                                                }}
+                                                                            />
+                                                                            <span>{opt.label || opt}</span>
+                                                                        </label>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+
+                                                            {field.choice_options?.length > 0 && (
+                                                                <div className="mt-4 space-y-2">
+                                                                    <div className="font-medium">{field.choice_question || 'Select one:'}</div>
+                                                                    {field.choice_options.map((opt, i) => (
+                                                                        <label key={i} className="flex items-center gap-2">
+                                                                            <input
+                                                                                type="radio"
+                                                                                name={`${field.uid}_choice`}
+                                                                                checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
+                                                                                onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
+                                                                            />
+                                                                            <span>{opt.label || opt}</span>
+                                                                        </label>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )} */}
+                                            {field.type === 'image_upload' && (
+                                                <div className="space-y-4">
+                                                    {/* Display Admin Images if they exist */}
+                                                    {field.enableAdminImages && field.adminImages?.length > 0 && (
+                                                        <div className="mb-4">
+                                                            <div className="text-sm font-medium text-gray-700 mb-2">Reference Images:</div>
+                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                                {field.adminImages.map((adminImg, index) => (
+                                                                    <div key={adminImg.id || index} className="border rounded overflow-hidden">
+                                                                        <img
+                                                                            src={adminImg.url}
+                                                                            alt={`Reference image ${index + 1}`}
+                                                                            className="w-full h-24 object-cover"
+                                                                            onError={(e) => {
+                                                                                e.target.src = '/placeholder-image.jpg';
+                                                                                console.error('Failed to load admin image:', adminImg.url);
+                                                                            }}
+                                                                        />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            <p className="text-xs text-gray-500 mt-1">
+                                                                These are reference images provided by the form creator.
+                                                            </p>
+                                                        </div>
+                                                    )}
+
+                                                    {/* User Upload Section */}
+                                                    <div>
+                                                        <div className="text-sm font-medium mb-2">
+                                                            アップロードされた画像 {field.max_images > 1 ? `(最大 ${field.max_images})` : ''}
+                                                        </div>
+
+                                                        {field.content && (
+                                                            <p className="text-gray-600 text-sm mb-3">{field.content}</p>
+                                                        )}
+
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            multiple={field.max_images > 1}
+                                                            required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
+                                                            className="w-full p-2 border rounded"
+                                                            onChange={e => {
+                                                                const newFiles = Array.from(e.target.files);
+                                                                const existing = responses[field.uid] || [];
                                                                 const merged = [...existing, ...newFiles];
                                                                 const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                                console.log(`Image upload change for ${field.uid}:`, limited);
                                                                 handleResponse(field.uid, limited);
                                                             }}
                                                         />
 
-                                                        {responses[field.uid]?.length > 0 && (
-                                                            <div className="mt-3 flex gap-4 flex-wrap">
+                                                        <p className="text-xs text-gray-500 mt-1">
+                                                            受け入れられる形式: JPG, PNG, GIF, etc.
+                                                        </p>
+                                                    </div>
+
+                                                    {/* Image Previews */}
+                                                    {responses[field.uid]?.length > 0 && (
+                                                        <div className="mt-3">
+                                                            <div className="text-sm font-medium mb-2">アップロードされた画像:</div>
+                                                            <div className="flex gap-4 flex-wrap">
                                                                 {responses[field.uid].map((file, i) => (
                                                                     <div key={i} className="relative">
                                                                         <img
@@ -691,225 +789,90 @@ export default function FormResponse() {
                                                                         >
                                                                             ✕
                                                                         </button>
+                                                                        <div className="text-xs text-gray-500 mt-1 text-center">
+                                                                            {file.name}
+                                                                        </div>
                                                                     </div>
                                                                 ))}
                                                             </div>
-                                                        )}
+                                                        </div>
+                                                    )}
 
-                                                        {(field.checkbox_options?.length > 0 || field.choice_options?.length > 0) && (
-                                                            <div className="mt-4 p-4 bg-gray-50 rounded border">
-                                                                {field.checkbox_options?.length > 0 && (
-                                                                    <div className="space-y-2">
-                                                                        <div className="font-medium">Select all that apply:</div>
-                                                                        {field.checkbox_options.map((opt, i) => (
-                                                                            <label key={i} className="flex items-center gap-2">
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={(responses[`${field.uid}_checkboxes`] || []).includes(opt.label || opt)}
-                                                                                    onChange={e => {
-                                                                                        const current = responses[`${field.uid}_checkboxes`] || [];
-                                                                                        const optionValue = opt.label || opt;
-                                                                                        let updated;
-                                                                                        if (e.target.checked) {
-                                                                                            updated = [...current, optionValue];
-                                                                                        } else {
-                                                                                            updated = current.filter(v => v !== optionValue);
-                                                                                        }
-                                                                                        handleResponse(`${field.uid}_checkboxes`, updated);
-                                                                                    }}
-                                                                                />
-                                                                                <span>{opt.label || opt}</span>
-                                                                            </label>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-
-                                                                {field.choice_options?.length > 0 && (
-                                                                    <div className="mt-4 space-y-2">
-                                                                        <div className="font-medium">{field.choice_question || 'Select one:'}</div>
-                                                                        {field.choice_options.map((opt, i) => (
-                                                                            <label key={i} className="flex items-center gap-2">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name={`${field.uid}_choice`}
-                                                                                    checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
-                                                                                    onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
-                                                                                />
-                                                                                <span>{opt.label || opt}</span>
-                                                                            </label>
-                                                                        ))}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                )} */}
-                                                            {field.type === 'image_upload' && (
-                                                                <div className="space-y-4">
-                                                                    {/* Display Admin Images if they exist */}
-                                                                    {field.enableAdminImages && field.adminImages?.length > 0 && (
-                                                                        <div className="mb-4">
-                                                                            <div className="text-sm font-medium text-gray-700 mb-2">Reference Images:</div>
-                                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                                                                {field.adminImages.map((adminImg, index) => (
-                                                                                    <div key={adminImg.id || index} className="border rounded overflow-hidden">
-                                                                                        <img
-                                                                                            src={adminImg.url}
-                                                                                            alt={`Reference image ${index + 1}`}
-                                                                                            className="w-full h-24 object-cover"
-                                                                                            onError={(e) => {
-                                                                                                e.target.src = '/placeholder-image.jpg';
-                                                                                                console.error('Failed to load admin image:', adminImg.url);
-                                                                                            }}
-                                                                                        />
-                                                                                    </div>
-                                                                                ))}
-                                                                            </div>
-                                                                            <p className="text-xs text-gray-500 mt-1">
-                                                                                These are reference images provided by the form creator.
-                                                                            </p>
-                                                                        </div>
-                                                                    )}
-
-                                                                    {/* User Upload Section */}
-                                                                    <div>
-                                                                        <div className="text-sm font-medium mb-2">
-                                                                            アップロードされた画像 {field.max_images > 1 ? `(最大 ${field.max_images})` : ''}
-                                                                        </div>
-
-                                                                        {field.content && (
-                                                                            <p className="text-gray-600 text-sm mb-3">{field.content}</p>
-                                                                        )}
-
-                                                                        <input
-                                                                            type="file"
-                                                                            accept="image/*"
-                                                                            multiple={field.max_images > 1}
-                                                                            required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                            className="w-full p-2 border rounded"
-                                                                            onChange={e => {
-                                                                                const newFiles = Array.from(e.target.files);
-                                                                                const existing = responses[field.uid] || [];
-                                                                                const merged = [...existing, ...newFiles];
-                                                                                const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                                                console.log(`Image upload change for ${field.uid}:`, limited);
-                                                                                handleResponse(field.uid, limited);
-                                                                            }}
-                                                                        />
-
-                                                                        <p className="text-xs text-gray-500 mt-1">
-                                                                            受け入れられる形式: JPG, PNG, GIF, etc.
-                                                                        </p>
-                                                                    </div>
-
-                                                                    {/* Image Previews */}
-                                                                    {responses[field.uid]?.length > 0 && (
-                                                                        <div className="mt-3">
-                                                                            <div className="text-sm font-medium mb-2">アップロードされた画像:</div>
-                                                                            <div className="flex gap-4 flex-wrap">
-                                                                                {responses[field.uid].map((file, i) => (
-                                                                                    <div key={i} className="relative">
-                                                                                        <img
-                                                                                            src={URL.createObjectURL(file)}
-                                                                                            alt={`Preview ${i + 1}`}
-                                                                                            className="h-24 w-24 object-cover rounded border"
-                                                                                        />
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            onClick={() => {
-                                                                                                const updated = responses[field.uid].filter((_, idx) => idx !== i);
-                                                                                                handleResponse(field.uid, updated);
-                                                                                            }}
-                                                                                            className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded"
-                                                                                        >
-                                                                                            ✕
-                                                                                        </button>
-                                                                                        <div className="text-xs text-gray-500 mt-1 text-center">
-                                                                                            {file.name}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                ))}
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-
-                                                                    {/* Checkbox and Multiple Choice Options */}
-                                                                    {(field.checkbox_options?.length > 0 || field.choice_options?.length > 0) && (
-                                                                        <div className="mt-4 p-4 bg-gray-50 rounded border">
-                                                                            {field.checkbox_options?.length > 0 && (
-                                                                                <div className="space-y-2">
-                                                                                    <div className="font-medium">適用するものを選択:</div>
-                                                                                    {field.checkbox_options.map((opt, i) => (
-                                                                                        <label key={i} className="flex items-center gap-2">
-                                                                                            <input
-                                                                                                type="checkbox"
-                                                                                                checked={(responses[`${field.uid}_checkboxes`] || []).includes(opt.label || opt)}
-                                                                                                onChange={e => {
-                                                                                                    const current = responses[`${field.uid}_checkboxes`] || [];
-                                                                                                    const optionValue = opt.label || opt;
-                                                                                                    let updated;
-                                                                                                    if (e.target.checked) {
-                                                                                                        updated = [...current, optionValue];
-                                                                                                    } else {
-                                                                                                        updated = current.filter(v => v !== optionValue);
-                                                                                                    }
-                                                                                                    handleResponse(`${field.uid}_checkboxes`, updated);
-                                                                                                }}
-                                                                                            />
-                                                                                            <span className="text-sm">{opt.label || opt}</span>
-                                                                                        </label>
-                                                                                    ))}
-                                                                                </div>
-                                                                            )}
-
-                                                                            {field.choice_options?.length > 0 && (
-                                                                                <div className="mt-4 space-y-2">
-                                                                                    <div className="font-medium">{field.choice_question || '1つ選択:'}</div>
-                                                                                    {field.choice_options.map((opt, i) => (
-                                                                                        <label key={i} className="flex items-center gap-2">
-                                                                                            <input
-                                                                                                type="radio"
-                                                                                                name={`${field.uid}_choice`}
-                                                                                                checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
-                                                                                                onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
-                                                                                            />
-                                                                                            <span className="text-sm">{opt.label || opt}</span>
-                                                                                        </label>
-                                                                                    ))}
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    )}
+                                                    {/* Checkbox and Multiple Choice Options */}
+                                                    {(field.checkbox_options?.length > 0 || field.choice_options?.length > 0) && (
+                                                        <div className="mt-4 p-4 bg-gray-50 rounded border">
+                                                            {field.checkbox_options?.length > 0 && (
+                                                                <div className="space-y-2">
+                                                                    <div className="font-medium">適用するものを選択:</div>
+                                                                    {field.checkbox_options.map((opt, i) => (
+                                                                        <label key={i} className="flex items-center gap-2">
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={(responses[`${field.uid}_checkboxes`] || []).includes(opt.label || opt)}
+                                                                                onChange={e => {
+                                                                                    const current = responses[`${field.uid}_checkboxes`] || [];
+                                                                                    const optionValue = opt.label || opt;
+                                                                                    let updated;
+                                                                                    if (e.target.checked) {
+                                                                                        updated = [...current, optionValue];
+                                                                                    } else {
+                                                                                        updated = current.filter(v => v !== optionValue);
+                                                                                    }
+                                                                                    handleResponse(`${field.uid}_checkboxes`, updated);
+                                                                                }}
+                                                                            />
+                                                                            <span className="text-sm">{opt.label || opt}</span>
+                                                                        </label>
+                                                                    ))}
                                                                 </div>
                                                             )}
 
-                                                            {/* date - FIXED */}
-                                                            {field.type === 'date' && (
-                                                                <input
-                                                                    type="date"
-                                                                    required={field.required}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="p-2 border rounded"
-                                                                    onChange={e => {
-                                                                        console.log(`Date change for ${field.uid}:`, e.target.value);
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
+                                                            {field.choice_options?.length > 0 && (
+                                                                <div className="mt-4 space-y-2">
+                                                                    <div className="font-medium">{field.choice_question || '1つ選択:'}</div>
+                                                                    {field.choice_options.map((opt, i) => (
+                                                                        <label key={i} className="flex items-center gap-2">
+                                                                            <input
+                                                                                type="radio"
+                                                                                name={`${field.uid}_choice`}
+                                                                                checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
+                                                                                onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
+                                                                            />
+                                                                            <span className="text-sm">{opt.label || opt}</span>
+                                                                        </label>
+                                                                    ))}
+                                                                </div>
                                                             )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            )}
 
-                                                            {/* time - FIXED */}
-                                                            {field.type === 'time' && (
-                                                                <input
-                                                                    type="time"
-                                                                    required={field.required}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="p-2 border rounded"
-                                                                    onChange={e => {
-                                                                        console.log(`Time change for ${field.uid}:`, e.target.value);
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
-                                                            )}
+                                            {/* date - FIXED */}
+                                            {field.type === 'date' && (
+                                                <input
+                                                    type="date"
+                                                    required={field.required}
+                                                    value={responses[field.uid] || ''}
+                                                    className="p-2 border rounded"
+                                                    onChange={e => {
+                                                        handleResponse(field.uid, e.target.value);
+                                                    }}
+                                                />
+                                            )}
+
+                                            {/* time - FIXED */}
+                                            {field.type === 'time' && (
+                                                <input
+                                                    type="time"
+                                                    required={field.required}
+                                                    value={responses[field.uid] || ''}
+                                                    className="p-2 border rounded"
+                                                    onChange={e => {
+                                                        handleResponse(field.uid, e.target.value);
+                                                    }}
+                                                />
+                                            )}
 
                                                             {/* section - Display only */}
                                                             {field.type === 'section' && field.placeholder !== '' && (
@@ -919,9 +882,9 @@ export default function FormResponse() {
                                                                     </div>
                                                                 </div>
                                                             )}
-                                                        </div>
-                                                    </label>
-                                                </div>
+                                        </div>
+                                    </label>
+                                </div>
                                             ))
                                         }
                                     </React.Fragment>
@@ -958,7 +921,6 @@ export default function FormResponse() {
                                                         value={responses[field.uid] || ''}
                                                         className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                         onChange={e => {
-                                                            console.log(`Short answer change for ${field.uid}:`, e.target.value);
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
                                                     />
@@ -973,7 +935,6 @@ export default function FormResponse() {
                                                         className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                         rows={4}
                                                         onChange={e => {
-                                                            console.log(`Paragraph change for ${field.uid}:`, e.target.value);
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
                                                     />
@@ -990,7 +951,6 @@ export default function FormResponse() {
                                                                     required={field.required}
                                                                     checked={responses[field.uid] === option}
                                                                     onChange={() => {
-                                                                        console.log(`Multiple choice change for ${field.uid}:`, option);
                                                                         handleResponse(field.uid, option);
                                                                     }}
                                                                 />
@@ -1033,7 +993,6 @@ export default function FormResponse() {
                                                                         } else {
                                                                             updated = current.filter(v => v !== option);
                                                                         }
-                                                                        console.log(`Checkbox change for ${field.uid}:`, updated);
                                                                         handleResponse(field.uid, updated);
                                                                     }}
                                                                 />
@@ -1061,7 +1020,6 @@ export default function FormResponse() {
                                                                     const combined = [...existing, ...newFiles];
                                                                     const limited = field.max_images ?
                                                                         combined.slice(0, field.max_images) : combined;
-                                                                    console.log(`File upload change for ${field.uid}:`, limited);
                                                                     handleResponse(field.uid, limited);
                                                                 }}
                                                             />
@@ -1072,7 +1030,7 @@ export default function FormResponse() {
                                                                 {responses[field.uid].map((file, i) => (
                                                                     <div key={i} className="flex items-center justify-between border p-2 rounded">
                                                                         <span className="truncate">{file.name}</span>
-                                                                        <button
+                                <button
                                                                             type="button"
                                                                             onClick={() => {
                                                                                 const updated = responses[field.uid].filter((_, idx) => idx !== i);
@@ -1081,8 +1039,8 @@ export default function FormResponse() {
                                                                             className="text-red-600 text-sm"
                                                                         >
                                                                             ✕
-                                                                        </button>
-                                                                    </div>
+                                </button>
+                            </div>
                                                                 ))}
                                                             </div>
                                                         )}
@@ -1103,7 +1061,6 @@ export default function FormResponse() {
                                                                 const existing = responses[field.uid] || [];
                                                                 const merged = [...existing, ...newFiles];
                                                                 const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                                console.log(`Image upload change for ${field.uid}:`, limited);
                                                                 handleResponse(field.uid, limited);
                                                             }}
                                                         />
@@ -1228,7 +1185,6 @@ export default function FormResponse() {
                                                                     const existing = responses[field.uid] || [];
                                                                     const merged = [...existing, ...newFiles];
                                                                     const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                                    console.log(`Image upload change for ${field.uid}:`, limited);
                                                                     handleResponse(field.uid, limited);
                                                                 }}
                                                             />
@@ -1327,7 +1283,6 @@ export default function FormResponse() {
                                                         value={responses[field.uid] || ''}
                                                         className="p-2 border rounded"
                                                         onChange={e => {
-                                                            console.log(`Date change for ${field.uid}:`, e.target.value);
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
                                                     />
@@ -1341,7 +1296,6 @@ export default function FormResponse() {
                                                         value={responses[field.uid] || ''}
                                                         className="p-2 border rounded"
                                                         onChange={e => {
-                                                            console.log(`Time change for ${field.uid}:`, e.target.value);
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
                                                     />
@@ -1359,11 +1313,11 @@ export default function FormResponse() {
                                         </label>
                                     </div>
                                 ))}
-                            </form>
-                        </>
-                    )}
-                </div>
+                        </form>
+                    </>
+                )}
             </div>
+        </div>
         </div >
     )
 }

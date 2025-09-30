@@ -21,7 +21,6 @@ export default function ResponsesModal({ form, onClose }) {
             } else {
                 data = await getFormResponses(form.id)
             }
-            console.log('Loaded responses:', data) // Debug log
             setResponses(data || [])
         } catch (e) {
             console.error('Error loading responses:', e)
@@ -33,7 +32,6 @@ export default function ResponsesModal({ form, onClose }) {
 
     // async function downloadCSV() {
     //     const res = await exportCSV();
-    //     console.log("Response is:", res);
     //     if (!res.ok) throw new Error('Failed to fetch CSV');
 
     //     const blob = await res.blob();
@@ -102,7 +100,6 @@ export default function ResponsesModal({ form, onClose }) {
                                         key={resp.id}
                                         className="mb-2 p-3 border rounded cursor-pointer hover:bg-gray-100"
                                         onClick={() => {
-                                            console.log('Selected response:', resp) // Debug log
                                             setSelectedResponse(resp)
                                         }}
                                     >
@@ -136,8 +133,6 @@ export default function ResponsesModal({ form, onClose }) {
                                     selectedResponse.answers
                                         .filter(a => a.answerText || a.imageUrls || a.files || a.checkboxSelections || a.multipleChoiceSelection)
                                         .map((answer, index) => {
-                                            console.log('Rendering answer:', answer) // Debug log
-
                                             const imageUrls = Array.isArray(answer.imageUrls) ? answer.imageUrls :
                                                 safeJsonParse(answer.imageUrls) || [];
                                             const files = Array.isArray(answer.files) ? answer.files :
