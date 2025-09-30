@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { exportCSV, getFormResponses } from '../api'
+import { getFormResponses } from '../api'
 
 export default function ResponsesModal({ form, onClose }) {
     const [responses, setResponses] = useState([])
@@ -16,7 +16,7 @@ export default function ResponsesModal({ form, onClose }) {
             setLoading(true)
             setError(null)
             let data = []
-            if(!form.id) {
+            if (!form.id) {
                 data = await getFormResponses(form.id)
             } else {
                 data = await getFormResponses(form.id)
@@ -31,21 +31,21 @@ export default function ResponsesModal({ form, onClose }) {
         }
     }
 
-    async function downloadCSV(formId) {
-        const res = await fetch(`/api/forms/${formId}/csv`);
-        console.log("Response is:", res);
-        if (!res.ok) throw new Error('Failed to fetch CSV');
+    // async function downloadCSV() {
+    //     const res = await exportCSV();
+    //     console.log("Response is:", res);
+    //     if (!res.ok) throw new Error('Failed to fetch CSV');
 
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `form_responses_${formId}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    }
+    //     const blob = await res.blob();
+    //     const url = window.URL.createObjectURL(blob);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = `form_responses_${formId}.csv`;
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     a.remove();
+    //     window.URL.revokeObjectURL(url);
+    // }
 
     // Safe JSON parse function
     const safeJsonParse = (str) => {
@@ -64,7 +64,19 @@ export default function ResponsesModal({ form, onClose }) {
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">回答 — {form.title}</h3>
                     <div className="flex gap-2">
-                        <button onClick={() => downloadCSV(form.id)} className="px-3 py-1 border rounded">CSVをエクスポート</button>
+                        {/* <button
+                            onClick={() => downloadCSV()}
+                            className="flex items-center gap-2 px-3 py-1 rounded hover:bg-gray-100"
+                            style={{ border: 'none', background: 'none', color: '#1967d2', fontWeight: 500, fontSize: '1rem' }}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 40 40" style={{ display: 'inline', verticalAlign: 'middle' }}>
+                                <rect width="40" height="40" rx="6" fill="#21A366"/>
+                                <rect x="7" y="7" width="26" height="26" rx="2" fill="#fff"/>
+                                <rect x="11" y="11" width="18" height="18" rx="1" fill="#21A366"/>
+                                <path d="M20 15v10M15 20h10" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+                            </svg>
+                            <span style={{ color: '#1967d2', fontWeight: 500, fontSize: '1rem' }}>スプレッドシートで表示</span>
+                        </button> */}
                         <button onClick={onClose} className="px-3 py-1 border rounded">閉じる</button>
                     </div>
                 </div>
@@ -101,12 +113,14 @@ export default function ResponsesModal({ form, onClose }) {
                         ) : (
                             // Step 2: Detailed read-only filled form
                             <div>
-                                <button
-                                    onClick={() => setSelectedResponse(null)}
-                                    className="mb-4 px-3 py-1 border rounded"
-                                >
-                                    ← 回答に戻る
-                                </button>
+                                <div className="flex items-center justify-between mb-4">
+                                    <button
+                                        onClick={() => setSelectedResponse(null)}
+                                        className="px-3 py-1 border rounded"
+                                    >
+                                        ← 回答に戻る
+                                    </button>
+                                </div>
 
                                 <div className="mb-4 p-3 bg-gray-50 rounded">
                                     <div className="text-sm text-gray-600">

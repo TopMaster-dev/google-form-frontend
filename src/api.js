@@ -109,9 +109,12 @@ export async function getGeneralFormID() {
     return response.data;
 }
 
-export function exportCSV(formId) {
-    return `${instance.defaults.baseURL}/forms/${formId}/csv`
-}
+// export async function exportCSV() {    
+//     const reponse = await instance.get(`/csv`);
+//     console.log(reponse);
+    
+//     return true;
+// }
 
 /* ------------------ OPTIONAL: GROUPED EXPORT ------------------ */
 const api = {
@@ -126,7 +129,7 @@ const api = {
     submitForm,
     getResponses,
     fetchResponses,
-    exportCSV,
+    // exportCSV,
     getCategoryForm,
     getCategoryFormID,
     getGeneralFormID

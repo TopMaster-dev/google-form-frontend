@@ -183,7 +183,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                         <button onClick={() => addQuestion('date')} className="px-3 py-1 border rounded text-sm">日付</button>
                         <button onClick={() => addQuestion('time')} className="px-3 py-1 border rounded text-sm">時間</button>
                         <button onClick={() => addQuestion('file_upload')} className="px-3 py-1 border rounded text-sm">ファイルアップロード</button>
-                        <button onClick={() => addQuestion('image')} className="px-3 py-1 border rounded text-sm">画像</button>
+                        {/* <button onClick={() => addQuestion('image')} className="px-3 py-1 border rounded text-sm">画像</button> */}
                         <button onClick={() => addQuestion('image_upload')} className="px-3 py-1 border rounded text-sm">画像アップロード</button>
                     </div>
 
