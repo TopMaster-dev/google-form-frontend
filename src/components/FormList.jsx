@@ -31,6 +31,9 @@ export default function FormsList({ forms = [], onOpen, onDelete, onViewResponse
         <>
             <div className="space-y-3">
                 <div className="bg-white p-3 rounded shadow">
+                    <button onClick={() => onViewResponses({id: 0})} className="px-2 py-1 border rounded text-sm">すべての回答を見る</button>
+                </div>
+                <div className="bg-white p-3 rounded shadow">
                     <button
                         onClick={() => onOpen(null)}
                         className="w-full text-left font-medium hover:text-blue-600 transition-colors"

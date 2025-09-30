@@ -15,7 +15,12 @@ export default function ResponsesModal({ form, onClose }) {
         try {
             setLoading(true)
             setError(null)
-            const data = await getFormResponses(form.id)
+            let data = []
+            if(!form.id) {
+                data = await getFormResponses(form.id)
+            } else {
+                data = await getFormResponses(form.id)
+            }
             console.log('Loaded responses:', data) // Debug log
             setResponses(data || [])
         } catch (e) {
@@ -76,8 +81,9 @@ export default function ResponsesModal({ form, onClose }) {
                             // Step 1: List of responses
                             responses.map((resp) => {
                                 const nameAnswer = resp.answers?.find(a => a.question?.includes('Name'))?.answerText ||
-                                    resp.respondent?.name || 'Anonymous';
-                                const email = resp.respondent?.email || 'No email';
+                                    resp.respondent?.name || '匿名';
+                                const email = resp.respondent?.email || 'メールなし';
+                                const formTitle = resp.form?.title || '無題';
 
                                 return (
                                     <div
@@ -88,7 +94,7 @@ export default function ResponsesModal({ form, onClose }) {
                                             setSelectedResponse(resp)
                                         }}
                                     >
-                                        {new Date(resp.submittedAt).toLocaleString()} — {nameAnswer} ({email})
+                                        {new Date(resp.submittedAt).toLocaleString()} — {nameAnswer} ({email}) — {formTitle}
                                     </div>
                                 )
                             })

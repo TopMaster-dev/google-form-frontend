@@ -222,6 +222,15 @@ export default function FormResponse() {
             formData.append('formId', formId);
             formData.append('submissionTimestamp', new Date().toISOString());
 
+            // Add current user information
+            const currentUser = JSON.parse(localStorage.getItem('gfc_user') || '{}');
+            if (currentUser && currentUser.id) {
+                formData.append('userId', currentUser.id);
+                formData.append('userName', currentUser.name || '');
+                formData.append('userEmail', currentUser.email || '');
+                formData.append('userRole', currentUser.role || '');
+            }
+
             console.log("Answers JSON:", answersJson);
             console.log("Form data is: ", formData);
             // Debug FormData contents
