@@ -9,6 +9,7 @@ export default function AdminPanel({ user, onLogout }) {
     const [forms, setForms] = useState([])
     const [active, setActive] = useState(null)
     const [showResponsesFor, setShowResponsesFor] = useState(null)
+    const [selectedCopyForm, setSelectedCopyForm] = useState(false)
 
     async function load() {
         try {
@@ -18,6 +19,13 @@ export default function AdminPanel({ user, onLogout }) {
     }
 
     useEffect(() => { load() }, [])
+
+    useEffect(() => {
+        if (selectedCopyForm) {     
+            setActive({...active, id: null})            
+            setSelectedCopyForm(false);
+        }
+    }, [selectedCopyForm]);
 
     async function handleSave(form) {
         try {
@@ -66,6 +74,8 @@ export default function AdminPanel({ user, onLogout }) {
 
 
     async function handleOpen(formInput) {
+        console.log(formInput);
+        
         if (formInput === null) {
             // Create new form
             setActive({
@@ -112,6 +122,8 @@ export default function AdminPanel({ user, onLogout }) {
                     }))
                 };
                 setActive(mappedForm);
+                console.log(active, '----------------------edit-------');
+                
             } catch (error) {
                 console.error('Error loading form:', error);
                 alert('フォームの読み込みに失敗しました。フォームが存在するかどうかを確認してください。');
@@ -131,9 +143,9 @@ export default function AdminPanel({ user, onLogout }) {
                 </div>
             </header>
 
-            <main className="p-6 grid grid-cols-12 gap-6">
+            <main className="p-6 grid grid-cols-12 gap-6 pb-20">
                 <aside className="col-span-3">
-                    <FormsList forms={forms} onOpen={handleOpen} onDelete={handleDelete} onViewResponses={(f) => setShowResponsesFor(f)} />
+                    <FormsList forms={forms} onOpen={handleOpen} onDelete={handleDelete} onViewResponses={(f) => setShowResponsesFor(f)} onCopy={(f) => setSelectedCopyForm(f)} />
                 </aside>
 
                 <section className="col-span-9">

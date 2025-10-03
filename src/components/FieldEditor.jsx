@@ -29,7 +29,7 @@ export default function FieldEditor({ field, onChange }) {
     //         reader.readAsDataURL(file)
     //     }
     // }
-    async function handleImageUpload(e) {
+    async function handleImageUpload(e) {        
         const file = e.target.files[0]
         if (file) {
             setUploading(true)
@@ -49,11 +49,10 @@ export default function FieldEditor({ field, onChange }) {
     }
 
     // Updated admin images upload handler
-    async function handleAdminImagesUpload(files) {
+    async function handleAdminImagesUpload(files) {                
         setUploading(true)
         try {
             const filePaths = await uploadMultipleImages(files)
-
             const newImages = filePaths.map(filePath => ({
                 id: Date.now() + Math.random(),
                 url: filePath // Store file path instead of base64
@@ -70,15 +69,18 @@ export default function FieldEditor({ field, onChange }) {
     }
 
     // Handle admin image deletion
-    async function handleAdminImageDelete(img) {
+    async function handleAdminImageDelete(img) {   
         try {
             // Extract filename from path
             const fileName = img.url.split('/').pop();
-            await deleteImage(fileName);
+
+            console.log(img, '----------------------fileName-------');
+            await deleteImage({fileName: fileName, id: img.id});
 
             // Remove from local state
             const updatedImages = field.adminImages.filter(i => i.id !== img.id);
             set('adminImages', updatedImages);
+            
             setAdminImagePreviews(updatedImages);
         } catch (error) {
             alert('Error deleting image: ' + error.message);
@@ -112,7 +114,7 @@ export default function FieldEditor({ field, onChange }) {
         set('options', opts.filter((_, idx) => idx !== i))
     } return (
         <div>
-            {field.type !== 'section' && (
+            {field.type !== 'section' && field.type !== 'title' && (
                 <div className="flex items-center gap-2 mb-2">
                     <label className="text-sm">Required</label>
                     <input type="checkbox" checked={!!field.required} onChange={e => set('required', e.target.checked)} />
@@ -400,6 +402,61 @@ export default function FieldEditor({ field, onChange }) {
                     </div>
                     <div className="text-sm text-gray-500">
                         セクションは情報表示用で、回答は必要ありません。
+                    </div>
+                    <div className="space-y-4">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            ref={adminImageInputRef}
+                            // onChange={e => {
+                            //     const files = Array.from(e.target.files);
+                            //     const readers = files.map(file => {
+                            //         return new Promise((resolve) => {
+                            //             const reader = new FileReader();
+                            //             reader.onload = (e) => resolve(e.target.result);
+                            //             reader.readAsDataURL(file);
+                            //         });
+                            //     });
+
+                            //     Promise.all(readers).then(results => {
+                            //         const newImages = results.map(dataUrl => ({
+                            //             id: Date.now() + Math.random(),
+                            //             url: dataUrl
+                            //         }));
+                            //         const updatedImages = [...(field.adminImages || []), ...newImages];
+                            //         set('adminImages', updatedImages);
+                            //         setAdminImagePreviews(updatedImages);
+                            //     });
+                            // }}
+                            onChange={e => {
+                                const files = Array.from(e.target.files);
+                                handleAdminImagesUpload(files);
+                            }}
+                            className="mb-2"
+                            disabled={uploading}
+                        />
+                        {uploading && <div className="text-sm text-blue-600">画像をアップロードしています...</div>}
+                        <div className="grid grid-cols-3 gap-4">
+                            {(field.adminImages || []).map((img, index) => (
+                                <div key={img.id} className="relative">
+                                    <img
+                                        src={img.url}
+                                        alt={`Admin uploaded ${index + 1}`}
+                                        className="w-full h-32 object-cover rounded"
+                                    />
+                                    <button
+                                        // onClick={() => {
+                                        //     const updatedImages = field.adminImages.filter(i => i.id !== img.id);
+                                        //     set('adminImages', updatedImages);
+                                        //     setAdminImagePreviews(updatedImages);
+                                        // }}
+                                        onClick={() => handleAdminImageDelete(img)}
+                                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                    >×</button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

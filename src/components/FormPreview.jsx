@@ -58,10 +58,10 @@ export default function FormPreview({ title, description, fields = [] }) {
 
             <div className="space-y-6">
                 {fields.map((f, idx) => (
-                    <div key={f.uid} className="p-4 border rounded">
+                    <div key={f.uid} className={`p-4 border rounded ${f.type === 'title' ? 'bg-[#E6B372]' : ''}`}>
                         <div className="flex items-center justify-between">
                             <div>
-                                <div className="font-medium">{idx + 1}. {f.label || '無題の質問'}</div>
+                                {f.type === 'title' ? <div className="text-2xl font-medium text-[#191919]">{f.label || '無題のタイトル'}</div> : <div className="font-medium">{idx + 1}. {f.label || '無題の質問'}</div>}
                                 {f.required && <div className="text-xs text-red-500">必須</div>}
                             </div>
                         </div>
@@ -179,6 +179,25 @@ export default function FormPreview({ title, description, fields = [] }) {
                                     <div className="text-blue-700">
                                         {f.placeholder || 'セクションの内容がここに表示されます。'}
                                     </div>
+                                    {f.adminImages?.length > 0 && (
+                                        <div className="mb-4 mt-4">
+                                            <div className="">
+                                                {f.adminImages.map((adminImg, index) => (
+                                                    <div key={adminImg.id || index} className="border rounded overflow-hidden">
+                                                        <img
+                                                            src={adminImg.url}
+                                                            alt={`Reference image ${index + 1}`}
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                e.target.src = '/placeholder-image.jpg';
+                                                                console.error('Failed to load admin image:', adminImg.url);
+                                                            }}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             {f.type === 'image' && (

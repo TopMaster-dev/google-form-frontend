@@ -4,7 +4,7 @@ import axios from 'axios'
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000/api'
 
 // Create axios instance
-const instance = axios.create({ baseURL: API_BASE, timeout: 20000 })
+const instance = axios.create({ baseURL: API_BASE, timeout: 60000 })
 
 // Attach token if available
 instance.interceptors.request.use(cfg => {

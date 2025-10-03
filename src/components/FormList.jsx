@@ -1,8 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-export default function FormsList({ forms = [], onOpen, onDelete, onViewResponses }) {
+export default function FormsList({ forms = [], onOpen, onDelete, onViewResponses, onCopy }) {
     const [showShareModal, setShowShareModal] = useState(false);
     const [selectedForm, setSelectedForm] = useState(null);
+    const [selectedCopyForm, setSelectedCopyForm] = useState(false);
+    const [selectedCopyFormData, setSelectedCopyFormData] = useState(null);
+
+    useEffect(() => {
+        if (selectedCopyForm) {
+            onCopy(selectedCopyForm);            
+            setSelectedCopyForm(false);
+        }
+    }, [selectedCopyForm]);
 
     const handleShare = (form) => {
         setSelectedForm(form);
@@ -31,7 +40,8 @@ export default function FormsList({ forms = [], onOpen, onDelete, onViewResponse
         <>
             <div className="space-y-3">
                 <div className="bg-white p-3 rounded shadow">
-                    <button onClick={() => onViewResponses({id: 0})} className="px-2 py-1 border rounded text-sm">すべての回答を見る</button>
+                    <button onClick={() => onViewResponses({id: 0})} className="px-2 py-1 border rounded text-sm w-full border-[#2563eb] hover:bg-blue-100">すべての回答を見る</button>
+                    <button onClick={() => selectedCopyFormData?.id && setSelectedCopyForm(true)} className="px-2 py-1 border rounded text-sm mt-4 w-full border-[#2563eb] hover:bg-blue-100">フォームをコピー</button>
                 </div>
                 <div className="bg-white p-3 rounded shadow">
                     <button
@@ -56,7 +66,7 @@ export default function FormsList({ forms = [], onOpen, onDelete, onViewResponse
                                 共有
                             </button>
                             <button onClick={() => onViewResponses(f)} className="px-2 py-1 border rounded text-sm">回答</button>
-                            <button onClick={() => onOpen(f)} className="px-2 py-1 border rounded text-sm">編集</button>
+                            <button onClick={() => {onOpen(f); setSelectedCopyFormData(f)}} className="px-2 py-1 border rounded text-sm">編集</button>
                             <button onClick={() => onDelete(f.id)} className="px-2 py-1 border rounded text-red-600 text-sm">削除</button>
                         </div>
                     </div>

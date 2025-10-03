@@ -49,15 +49,17 @@ export const uploadMultipleImages = async (files) => {
     }
 };
 
-export const deleteImage = async (fileName) => {
+export const deleteImage = async (data) => {
+    console.log(data);
+     
     try {
-        const response = await fetch(`${API_BASE_URL}/upload/image`, {
+        const response = await fetch(`${API_BASE_URL}/api/upload/image`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({ fileName })
+            body: JSON.stringify(data)
         });
 
         if (!response.ok) {
