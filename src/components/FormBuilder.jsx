@@ -72,6 +72,26 @@ export default function FormBuilderPanel({ form, onSave }) {
         })
     }
 
+    function copyField(uid) {
+        const field = local.fields.find(f => f.uid === uid)
+        if (!field) return
+        const q = {
+            id: null, // will be created by backend if saving new
+            uid: uuidv4(),
+            label: field.label,
+            type: field.type,
+            required: field.required,
+            placeholder: field.placeholder,
+            options: field.options,
+            adminImages: field.adminImages,
+            enableAdminImages: field.enableAdminImages
+        }
+        setLocal(prevLocal => ({
+            ...prevLocal,
+            fields: [...(prevLocal.fields || []), q]
+        }))
+    }
+
     // ✅ Added helper to normalize array fields
     function normalizeArray(val) {
         if (!val) return []
@@ -192,6 +212,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                                         <div className="flex flex-col gap-2">
                                             <button onClick={() => moveField(f.uid, -1)} className="px-2 py-1 border rounded">↑</button>
                                             <button onClick={() => moveField(f.uid, 1)} className="px-2 py-1 border rounded">↓</button>
+                                            <button onClick={() => copyField(f.uid)} className="px-2 py-1 border rounded text-[#3d52e4]">コピー</button>
                                             <button onClick={() => removeField(f.uid)} className="px-2 py-1 border rounded text-red-600">削除</button>
                                         </div>
                                     </div>

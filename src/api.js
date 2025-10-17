@@ -62,7 +62,8 @@ export async function submitForm(formId, formData) {
     for (let [key, value] of formData.entries()) {
         console.log(`${key}:`, value);
     }
-
+    console.log(formData);
+    
     const response = await instance.post(
         `/forms/${formId}/responses`,
         formData,
