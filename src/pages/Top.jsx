@@ -48,15 +48,15 @@ export default function Top() {
     const renderMovieSection = (categoryId, label) => (
         <div className="space-y-4 mb-16">
             {/* Movie type display */}
-            <div className="bg-[#E6B372] p-4">
-                <div className="text-center">
-                    <span className="text-lg font-semibold text-white">
+            <div className="bg-[#F9F6EF] p-4">
+                <div className="text-left">
+                    <span className="text-[14px] font-semibold">
                         {label}
                     </span>
                 </div>
             </div>
             {/* Movie selection dropdown */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1">
                 <div className="flex-1">
                     <select
                         value={selected[categoryId]}
@@ -85,7 +85,7 @@ export default function Top() {
                 {/* Proceed button */}
                 <button
                     onClick={() => handleProceed(categoryId)}
-                    className={`px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center gap-2 ${
+                    className={`px-8 py-4 rounded-lg font-semibold text-[14px] transition-colors duration-200 flex items-center gap-2 ${
                         selected[categoryId] 
                             ? 'bg-[#215261] hover:bg-teal-700 text-white' 
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -116,7 +116,7 @@ export default function Top() {
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
                 {/* Header */}
                 <div className="bg-[#D6939D] text-white p-8 rounded-t-lg">
-                    <h1 className="text-3xl font-bold text-center">
+                    <h1 className="text-3xl font-bold text-center font-zen-maru-gothic text-[24px]" style={{ fontFamily: 'Zen Maru Gothic'}}>
                         お写真提出フォーム
                     </h1>
                 </div>
@@ -124,11 +124,11 @@ export default function Top() {
                 {/* Content */}
                 <div className="py-8">
                     {/* Thank you message */}
-                    <div className="text-center mb-8">
-                        <p className="text-lg text-gray-700 mb-2">
+                    <div className="text-center mb-8 text-[14px]">
+                        <p className="text-gray-700 mb-2">
                             オーダーいただきまして、ありがとうございます。
                         </p>
-                        <p className="text-lg text-gray-700">
+                        <p className="text-gray-700">
                             ご注文のムービーを選択し、お写真を提出してください。
                         </p>
                     </div>

@@ -257,7 +257,7 @@ export default function FormResponse() {
 
     return (
         <div>
-            <div className="min-h-screen bg-[#F9F6EF] py-16">
+            <div className="min-h-screen bg-white py-16">
                 <div className="max-w-4xl mx-auto px-4">
                     {/* Main Title */}
                     <div className="text-center mb-8 mt-16">
@@ -268,7 +268,7 @@ export default function FormResponse() {
 
                     {/* Sample Video Section */}
                     <div className="text-center mb-12">
-                        <div className="relative inline-block">
+                        <div className="relative inline-block ">
                             <div className="w-96 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden">
                                 {/* Video Thumbnail */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
@@ -291,15 +291,15 @@ export default function FormResponse() {
                     {/* Information Section */}
                     <div className="mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="w-1 h-8 bg-gray-600 mr-3"></div>
-                            <h2 className="text-xl font-semibold text-[#215261]">おふたりの情報</h2>
+                            <div className="w-1 h-8 bg-[#215261] mr-3"></div>
+                            <h2 className="text-[16px] font-semibold text-[#215261]">おふたりの情報</h2>
                         </div>
                         <div className="space-y-2">
                             {general.map((item, idx) => (
-                                <a href={`#${item.title}`} key={item.id || idx} className='bg-[#E6B372] hover:bg-gray-200 p-4 rounded-lg cursor-pointer flex items-center justify-between transition-colors'>
+                                <a href={`#${item.title}`} key={item.id || idx} className='bg-[#F9F6EF] hover:bg-gray-200 p-4 rounded-lg cursor-pointer flex items-center justify-between transition-colors'>
                                     <div>
-                                        <div className="font-medium text-[#191919]">{item.title}</div>
-                                        <div className="text-sm text-gray-600">{item.description}</div>
+                                        <div className="font-medium text-[#191919] text-[16px]">{item.title}</div>
+                                        <div className="text-sm text-gray-600 text-[16px]">{item.description}</div>
                                     </div>
                                     <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -312,17 +312,17 @@ export default function FormResponse() {
                     {/* Photos and Messages Section */}
                     <div className="mb-8">
                         <div className="flex items-center mb-4">
-                            <div className="w-1 h-8 bg-gray-600 mr-3"></div>
-                            <h2 className="text-xl font-semibold text-[#215261]">お写真・メッセージ</h2>
+                            <div className="w-1 h-8 bg-[#215261] mr-3"></div>
+                            <h2 className="text-[16px] font-semibold text-[#215261]">お写真・メッセージ</h2>
                         </div>
                         <div className="space-y-2">
                             {Array.isArray(form.fields) &&
                                 form.fields
                                     .filter(item => item.type === "section")
                                     .map((item, idx) => (
-                                        <a href={`#section${item.uid || idx}`} key={item.uid || idx} className="bg-gray-100 hover:bg-gray-200 p-4 rounded-lg cursor-pointer flex items-center justify-between transition-colors">
+                                        <a href={`#section${item.uid || idx}`} key={item.uid || idx} className="bg-[#F9F6EF] hover:bg-gray-200 p-4 rounded-lg cursor-pointer flex items-center justify-between transition-colors">
                                             <div>
-                                                <div className="font-medium text-[#191919]">{item.label}</div>
+                                                <div className="font-medium text-[#191919] text-[16px]">{item.label}</div>
                                             </div>
                                             <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -466,9 +466,9 @@ export default function FormResponse() {
                                 {general.map((item, idx) => (
                                     <React.Fragment key={item.id || item.uid || idx}>
                                         <div className="p-6 border-b" id={item.title}>
-                                            <h1 className="text-3xl font-bold text-purple-700">{item.title}</h1>
+                                            <h1 className="text-[18px] text-center font-bold text-[#000080]" style={{ fontFamily: 'Zen Maru Gothic' }}>{item.title}</h1>
                                             {item.description && (
-                                                <p className="mt-2 text-gray-600">{item.description}</p>
+                                                <p className="mt-2 text-gray-600 text-center">{item.description}</p>
                                             )}
                                         </div>
                                         {
@@ -476,11 +476,11 @@ export default function FormResponse() {
                                                 <div key={field.uid} className="space-y-2">
                                                     <label className="block">
                                                         <div
-                                                            className={`font-medium text-[#191919] ${field.type == 'title' ? 'border-l-[5px] border-[#e6b372] p-2 bg-[#e6b37280]' : ''}`}
+                                                            className={`font-medium text-[#191919] text-[14px] rounded-[5px] ${field.type == 'title' ? 'pl-4 p-2 bg-[#F9F6EF]' : ''}`}
                                                             {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                                         >
                                                             {/* {idx + 1}. {field.label} */}
-                                                            {field.type == 'section' ? 'セクション ー' + field.label : field.type == 'title' ? field.label : idx + 1 + '. ' + field.label}
+                                                            {field.type == 'section' ? 'セクション ー' + field.label : field.type == 'title' ? field.label : field.label}
                                                             {field.required && (
                                                                 <span className="text-red-500 ml-1">*</span>
                                                             )}
@@ -763,10 +763,6 @@ export default function FormResponse() {
                                                                                 handleResponse(field.uid, limited);
                                                                             }}
                                                                         />
-
-                                                                        <p className="text-xs text-gray-500 mt-1">
-                                                                            受け入れられる形式: JPG, PNG, GIF, etc.
-                                                                        </p>
                                                                     </div>
 
                                                                     {/* Image Previews */}
@@ -910,23 +906,23 @@ export default function FormResponse() {
                                         }
                                     </React.Fragment>
                                 ))}
-                                < div className="p-6 border-b" >
-                                    <h1 className="text-3xl font-bold text-purple-700">{form.title}</h1>
+                                {/* < div className="p-6 border-b" >
+                                    <h1 className="text-[18px] font-bold text-[#000080] text-center">{form.title}</h1>
                                     {
                                         form.description && (
-                                            <p className="mt-2 text-gray-600">{form.description}</p>
+                                            <p className="mt-2 text-gray-600 text-[14px] text-center">{form.description}</p>
                                         )
                                     }
-                                </div>
+                                </div> */}
                                 {form.fields.map((field, idx) => (
                                     <div key={field.uid} className="space-y-2">
                                         <label className="block">
                                             <div
-                                                className={`font-medium text-[#191919] ${field.type == 'title' ? 'text-2xl font-medium text-[#191919] py-2' : ''}`}
+                                                className={`font-medium text-[14px] rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#000080]' : 'text-[#191919] pl-4 p-2 bg-[#F9F6EF]'}`}
                                                 {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                             >
                                                 {/* {idx + 1}. {field.label} */}
-                                                {field.type == 'section' ? 'セクション ー' + field.label : field.type == 'title' ? field.label : idx + 1 + '. ' + field.label}
+                                                {field.type == 'section' ? 'セクション ー' + field.label : field.type == 'title' ? field.label : field.label}
                                                 {field.required && (
                                                     <span className="text-red-500 ml-1">*</span>
                                                 )}
@@ -1209,10 +1205,6 @@ export default function FormResponse() {
                                                                     handleResponse(field.uid, limited);
                                                                 }}
                                                             />
-
-                                                            <p className="text-xs text-gray-500 mt-1">
-                                                                受け入れられる形式: JPG, PNG, GIF, etc.
-                                                            </p>
                                                         </div>
 
                                                         {/* Image Previews */}
