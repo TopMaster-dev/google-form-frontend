@@ -268,8 +268,8 @@ export default function FormResponse() {
 
                     {/* Sample Video Section */}
                     <div className="text-center mb-12">
-                        <div className="relative inline-block ">
-                            <div className="w-96 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        <div className="relative inline-block sm:bg-red-500 sm-w-full">
+                            <div className="w-96 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden sm-w-full">
                                 {/* Video Thumbnail */}
                                 <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
                                     <div className="text-center">
