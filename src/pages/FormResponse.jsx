@@ -788,7 +788,7 @@ export default function FormResponse() {
 
                                                             {/* section - Display only */}
                                                             {field.type === 'section' && field.placeholder !== '' && (
-                                                                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                                                <div className="p-4">
                                                                     <div className="text-blue-700">
                                                                         {field.placeholder}
                                                                     </div>
@@ -1135,7 +1135,7 @@ export default function FormResponse() {
 
                                                 {/* section - Display only */}
                                                 {field.type === 'section' && (
-                                                    <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                                    <div className="p-4">
                                                         <div className="text-blue-700">
                                                             {field.placeholder}
                                                         </div>
