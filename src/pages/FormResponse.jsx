@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { UNSAFE_DataRouterContext, useParams, useSearchParams } from 'react-router-dom';
 import api from '../api';
 
 export default function FormResponse() {
@@ -73,7 +73,7 @@ export default function FormResponse() {
             setCategory(categoryData);
             setGeneral(generalData);
             console.log(generalData);
-            console.log(formData);
+            console.log(formData.fields[0].text_number, '-----------');
         } catch (err) {
             setError(err.response?.data?.message || 'Form not found');
         } finally {
@@ -503,6 +503,7 @@ export default function FormResponse() {
                                                                     type="text"
                                                                     required={field.required}
                                                                     placeholder={field.placeholder}
+                                                                    maxLength={field.text_number}
                                                                     value={responses[field.uid] || ''}
                                                                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                                     onChange={e => {
@@ -517,6 +518,7 @@ export default function FormResponse() {
                                                                     required={field.required}
                                                                     placeholder={field.placeholder}
                                                                     value={responses[field.uid] || ''}
+                                                                    maxLength={field.text_number}
                                                                     className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                                     rows={4}
                                                                     onChange={e => {
@@ -849,6 +851,7 @@ export default function FormResponse() {
                                                         type="text"
                                                         required={field.required}
                                                         placeholder={field.placeholder}
+                                                        maxLength={field.text_number}
                                                         value={responses[field.uid] || ''}
                                                         className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                         onChange={e => {
@@ -863,6 +866,7 @@ export default function FormResponse() {
                                                         required={field.required}
                                                         placeholder={field.placeholder}
                                                         value={responses[field.uid] || ''}
+                                                        maxLength={field.text_number}
                                                         className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
                                                         rows={4}
                                                         onChange={e => {

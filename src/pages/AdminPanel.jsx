@@ -122,7 +122,6 @@ export default function AdminPanel({ user, onLogout }) {
                     }))
                 };
                 setActive(mappedForm);
-                console.log(active, '----------------------edit-------');
                 
             } catch (error) {
                 console.error('Error loading form:', error);
