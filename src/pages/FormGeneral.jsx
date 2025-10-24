@@ -485,7 +485,6 @@ export default function FormGeneral() {
                                                     {/* Display Admin Images if they exist */}
                                                     {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                         <div className="mb-4">
-                                                            <div className="text-sm font-medium text-gray-700 mb-2">Reference Images:</div>
                                                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                                                 {field.adminImages.map((adminImg, index) => (
                                                                     <div key={adminImg.id || index} className="border rounded overflow-hidden">
@@ -502,7 +501,6 @@ export default function FormGeneral() {
                                                                 ))}
                                                             </div>
                                                             <p className="text-xs text-gray-500 mt-1">
-                                                                These are reference images provided by the form creator.
                                                             </p>
                                                         </div>
                                                     )}

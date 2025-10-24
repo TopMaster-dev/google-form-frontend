@@ -23,7 +23,19 @@ body {
     font-size: 17px;
   }
 
+  .text-s-sp {
+    font-size: 14px;
+  }
+
   .text-m-sp {
     font-size: 12px;
+  }
+
+  .sm-top-sp {
+    width: 95%;
+  }
+
+  .sm-text-p {
+    padding-inline: 10px;
   }
 }

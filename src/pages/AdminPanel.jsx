@@ -28,6 +28,8 @@ export default function AdminPanel({ user, onLogout }) {
     }, [selectedCopyForm]);
 
     async function handleSave(form) {
+        console.log(form);
+        
         try {
             if (form.id) {
                 await updateForm(form.id, form)
@@ -73,9 +75,7 @@ export default function AdminPanel({ user, onLogout }) {
     }
 
 
-    async function handleOpen(formInput) {
-        console.log(formInput);
-        
+    async function handleOpen(formInput) {     
         if (formInput === null) {
             // Create new form
             setActive({
