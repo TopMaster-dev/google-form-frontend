@@ -13,6 +13,8 @@ export default function FieldEditor({ field, onChange }) {
 
     function addOption() {
         const opts = Array.isArray(field.options) ? field.options : []
+        console.log(opts);
+        
         const newOption = { id: Date.now(), label: 'Option' }
         set('options', [...opts, newOption])
     }
@@ -112,10 +114,6 @@ export default function FieldEditor({ field, onChange }) {
             )}
 
             {['short_answer', 'paragraph', 'date', 'time'].includes(field.type) && (
-                <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
-            )}
-
-            {field.type === 'file_upload' && (
                 <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
             )}
 
@@ -354,7 +352,7 @@ export default function FieldEditor({ field, onChange }) {
                 </div>
             )}
 
-            {field.type === 'section' && (
+            {['section', 'checkboxes', 'dropdown', 'title', 'file_upload'].includes(field.type) && (
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-2">セクション内容</label>

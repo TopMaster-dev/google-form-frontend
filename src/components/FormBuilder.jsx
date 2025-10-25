@@ -168,8 +168,7 @@ export default function FormBuilderPanel({ form, onSave }) {
             title: 'title'
         }
         return type // Keep the frontend types as is, no need to map
-    }
-
+    }    
     return (
         <>
             <div className="grid grid-cols-12 gap-4">

@@ -897,24 +897,74 @@ export default function FormResponse() {
 
                                                 {/* dropdown - NEW */}
                                                 {field.type === 'dropdown' && (
-                                                    <select
-                                                        required={field.required}
-                                                        value={responses[field.uid] || ''}
-                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                        onChange={e => handleResponse(field.uid, e.target.value)}
-                                                    >
-                                                        <option value="">選択...</option>
-                                                        {field.options.map((option, i) => (
-                                                            <option key={i} value={option}>
-                                                                {option}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                    <>
+                                                        <div className="p-4">
+                                                            <div className="text-gray-600">
+                                                                {field.placeholder}
+                                                            </div>
+                                                            {field.adminImages?.length > 0 && (
+                                                                <div className="mb-4 mt-4">
+                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                        {field.adminImages.map((adminImg, index) => (
+                                                                            <div key={adminImg.id || index} className="overflow-hidden">
+                                                                                <img
+                                                                                    src={adminImg.url}
+                                                                                    alt={`Reference image ${index + 1}`}
+                                                                                    className="w-full h-full object-cover border"
+                                                                                    onError={(e) => {
+                                                                                        e.target.src = '/placeholder-image.jpg';
+                                                                                        console.error('Failed to load admin image:', adminImg.url);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <select
+                                                            required={field.required}
+                                                            value={responses[field.uid] || ''}
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            onChange={e => handleResponse(field.uid, e.target.value)}
+                                                        >
+                                                            <option value="">選択...</option>
+                                                            {field.options.map((option, i) => (
+                                                                <option key={i} value={option}>
+                                                                    {option}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </>
                                                 )}
 
                                                 {/* checkboxes - FIXED */}
                                                 {field.type === 'checkboxes' && (
                                                     <div className="space-y-2">
+                                                        <div className="p-4">
+                                                            <div className="text-gray-600">
+                                                                {field.placeholder}
+                                                            </div>
+                                                            {field.adminImages?.length > 0 && (
+                                                                <div className="mb-4 mt-4">
+                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                        {field.adminImages.map((adminImg, index) => (
+                                                                            <div key={adminImg.id || index} className="overflow-hidden">
+                                                                                <img
+                                                                                    src={adminImg.url}
+                                                                                    alt={`Reference image ${index + 1}`}
+                                                                                    className="w-full h-full object-cover border"
+                                                                                    onError={(e) => {
+                                                                                        e.target.src = '/placeholder-image.jpg';
+                                                                                        console.error('Failed to load admin image:', adminImg.url);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                         {field.options.map((option, i) => (
                                                             <label key={i} className="flex items-center space-x-2">
                                                                 <input
@@ -943,6 +993,30 @@ export default function FormResponse() {
                                                         {field.content && (
                                                             <div className="text-gray-600">{field.content}</div>
                                                         )}
+                                                        <div className="p-4">
+                                                            <div className="text-gray-600">
+                                                                {field.placeholder}
+                                                            </div>
+                                                            {field.adminImages?.length > 0 && (
+                                                                <div className="mb-4 mt-4">
+                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                        {field.adminImages.map((adminImg, index) => (
+                                                                            <div key={adminImg.id || index} className="overflow-hidden">
+                                                                                <img
+                                                                                    src={adminImg.url}
+                                                                                    alt={`Reference image ${index + 1}`}
+                                                                                    className="w-full h-full object-cover border"
+                                                                                    onError={(e) => {
+                                                                                        e.target.src = '/placeholder-image.jpg';
+                                                                                        console.error('Failed to load admin image:', adminImg.url);
+                                                                                    }}
+                                                                                />
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                         <div>
                                                             <input
                                                                 type="file"
@@ -1138,9 +1212,9 @@ export default function FormResponse() {
                                                 )}
 
                                                 {/* section - Display only */}
-                                                {field.type === 'section' && (
+                                                {(field.type === 'section' || field.type === 'title') && (
                                                     <div className="p-4">
-                                                        <div className="text-blue-700">
+                                                        <div className="text-gray-600">
                                                             {field.placeholder}
                                                         </div>
                                                         {field.adminImages?.length > 0 && (
