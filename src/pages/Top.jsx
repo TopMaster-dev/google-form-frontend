@@ -139,7 +139,7 @@ export default function Top() {
                             ご注文のムービーをお選びください
                         </h2>
                         {renderMovieSection(1, 'オープニングムービー')}
-                        {renderMovieSection(2, 'プロフィールムービ')}
+                        {renderMovieSection(2, 'プロフィールムービー')}
                         {renderMovieSection(3, 'エンドロール・レタームービーその他')}
                     </div>
 

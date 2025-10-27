@@ -17,7 +17,7 @@ export default function FormResponse() {
     const selectedMovie = searchParams.get('movie') || 'ボタニカ';
     const [activeSection, setActiveSection] = useState(null);
 
-    const categoryTitles = ['オープニングムービー', 'プロフィールムービ', 'エンドロール・レタームービーその他'];
+    const categoryTitles = ['オープニングムービー', 'プロフィールムービー', 'エンドロール・レタームービーその他'];
 
     const sections = {
         info: [
@@ -476,7 +476,7 @@ export default function FormResponse() {
                                 {general.map((item, idx) => (
                                     <React.Fragment key={item.id || item.uid || idx}>
                                         <div className="p-6 border-b" id={item.title}>
-                                            <h1 className="text-[18px] text-center font-bold text-[#000080]" style={{ fontFamily: 'Zen Maru Gothic' }}>{item.title}</h1>
+                                            <h1 className="text-[18px] text-center font-bold text-[#215261] section-title" style={{ fontFamily: 'Zen Maru Gothic' }}>{item.title}</h1>
                                             {item.description && (
                                                 <p className="mt-2 text-gray-600 text-center">{item.description}</p>
                                             )}
@@ -593,7 +593,7 @@ export default function FormResponse() {
                                                             {field.type === 'file_upload' && (
                                                                 <div className="space-y-4">
                                                                     {field.content && (
-                                                                        <div className="text-gray-600">{field.content}</div>
+                                                                        <div className="text-gray-600 text-[14px]">{field.content}</div>
                                                                     )}
                                                                     <div>
                                                                         <input
@@ -638,13 +638,13 @@ export default function FormResponse() {
                                                                     {/* Display Admin Images if they exist */}
                                                                     {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                                         <div className="mb-4">
-                                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                                 {field.adminImages.map((adminImg, index) => (
                                                                                     <div key={adminImg.id || index} className="border rounded overflow-hidden">
                                                                                         <img
                                                                                             src={adminImg.url}
                                                                                             alt={`Reference image ${index + 1}`}
-                                                                                            className="w-full h-24 object-cover"
+                                                                                            className="w-full object-cover"
                                                                                             onError={(e) => {
                                                                                                 e.target.src = '/placeholder-image.jpg';
                                                                                                 console.error('Failed to load admin image:', adminImg.url);
@@ -660,10 +660,6 @@ export default function FormResponse() {
 
                                                                     {/* User Upload Section */}
                                                                     <div>
-                                                                        <div className="text-sm font-medium mb-2">
-                                                                            アップロードされた画像 {field.max_images > 1 ? `(最大 ${field.max_images})` : ''}
-                                                                        </div>
-
                                                                         {field.content && (
                                                                             <p className="text-gray-600 text-sm mb-3">{field.content}</p>
                                                                         )}
@@ -834,7 +830,7 @@ export default function FormResponse() {
                                     <div key={field.uid} className="space-y-2">
                                         <label className="block">
                                             <div
-                                                className={`font-medium text-[14px] rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#000080]' : 'text-[#191919] pl-4 p-2 bg-[#F9F6EF]'}`}
+                                                className={`font-medium text-[14px] rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title' : field.type == 'title' ? 'text-[#191919] pl-4 p-2 bg-[#F9F6EF]' : ''}`}
                                                 {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                             >
                                                 {/* {idx + 1}. {field.label} */}
@@ -899,12 +895,12 @@ export default function FormResponse() {
                                                 {field.type === 'dropdown' && (
                                                     <>
                                                         <div className="p-4">
-                                                            <div className="text-gray-600">
+                                                            <div className="text-gray-600 text-[14px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
                                                                 <div className="mb-4 mt-4">
-                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2 gap-3">
                                                                         {field.adminImages.map((adminImg, index) => (
                                                                             <div key={adminImg.id || index} className="overflow-hidden">
                                                                                 <img
@@ -942,12 +938,12 @@ export default function FormResponse() {
                                                 {field.type === 'checkboxes' && (
                                                     <div className="space-y-2">
                                                         <div className="p-4">
-                                                            <div className="text-gray-600">
+                                                            <div className="text-gray-600 text-[14px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
                                                                 <div className="mb-4 mt-4">
-                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2 gap-3">
                                                                         {field.adminImages.map((adminImg, index) => (
                                                                             <div key={adminImg.id || index} className="overflow-hidden">
                                                                                 <img
@@ -991,15 +987,15 @@ export default function FormResponse() {
                                                 {field.type === 'file_upload' && (
                                                     <div className="space-y-4">
                                                         {field.content && (
-                                                            <div className="text-gray-600">{field.content}</div>
+                                                            <div className="text-gray-600 text-[14px]">{field.content}</div>
                                                         )}
                                                         <div className="p-4">
-                                                            <div className="text-gray-600">
+                                                            <div className="text-gray-600 text-[14px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
                                                                 <div className="mb-4 mt-4">
-                                                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                                    <div className="grid grid-cols-1 md:grid-cols-1 gap-3">
                                                                         {field.adminImages.map((adminImg, index) => (
                                                                             <div key={adminImg.id || index} className="overflow-hidden">
                                                                                 <img
@@ -1061,13 +1057,13 @@ export default function FormResponse() {
                                                         {/* Display Admin Images if they exist */}
                                                         {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                             <div className="mb-4">
-                                                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                     {field.adminImages.map((adminImg, index) => (
                                                                         <div key={adminImg.id || index} className="border rounded overflow-hidden">
                                                                             <img
                                                                                 src={adminImg.url}
                                                                                 alt={`Reference image ${index + 1}`}
-                                                                                className="w-full h-24 object-cover"
+                                                                                className="w-full object-cover"
                                                                                 onError={(e) => {
                                                                                     e.target.src = '/placeholder-image.jpg';
                                                                                     console.error('Failed to load admin image:', adminImg.url);
@@ -1083,10 +1079,6 @@ export default function FormResponse() {
 
                                                         {/* User Upload Section */}
                                                         <div>
-                                                            <div className="text-sm font-medium mb-2">
-                                                                アップロードされた画像 {field.max_images > 1 ? `(最大 ${field.max_images})` : ''}
-                                                            </div>
-
                                                             {field.content && (
                                                                 <p className="text-gray-600 text-sm mb-3">{field.content}</p>
                                                             )}
@@ -1214,7 +1206,7 @@ export default function FormResponse() {
                                                 {/* section - Display only */}
                                                 {(field.type === 'section' || field.type === 'title') && (
                                                     <div className="p-4">
-                                                        <div className="text-gray-600">
+                                                        <div className="text-gray-600 text-[14px]">
                                                             {field.placeholder}
                                                         </div>
                                                         {field.adminImages?.length > 0 && (

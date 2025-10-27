@@ -183,7 +183,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                             >
                                 <option value="0">カテゴリを選択</option>
                                 <option value="1">オープニングムービー</option>
-                                <option value="2">プロフィールムービ</option>
+                                <option value="2">プロフィールムービー</option>
                                 <option value="3">エンドロール・レタームービーその他</option>
                             </select>
                         </div>
