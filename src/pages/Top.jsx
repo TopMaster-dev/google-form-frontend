@@ -48,7 +48,7 @@ export default function Top() {
     const renderMovieSection = (categoryId, label) => (
         <div className="space-y-4 mb-16">
             {/* Movie type display */}
-            <div className="bg-[#F9F6EF] p-4">
+            <div className="bg-[#F9F6EF] p-4 rounded-[10px]">
                 <div className="text-left">
                     <span className="text-[14px] font-semibold">
                         {label}
@@ -113,7 +113,7 @@ export default function Top() {
 
     return (
         <div className="min-h-screen bg-[#F9F6EF] py-8">
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg">
+            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg sm-top-sp">
                 {/* Header */}
                 <div className="bg-[#D6939D] text-white p-8 rounded-t-lg">
                     <h1 className="text-3xl font-bold text-center font-zen-maru-gothic text-[24px]" style={{ fontFamily: 'Zen Maru Gothic'}}>
@@ -144,7 +144,7 @@ export default function Top() {
                     </div>
 
                     {/* Additional info */}
-                    <div className="text-center text-gray-600">
+                    <div className="text-center text-gray-600 sm-text-p">
                         <p className="text-sm">
                             選択したムービーに応じて、適切な写真提出フォームに移動します。
                         </p>
