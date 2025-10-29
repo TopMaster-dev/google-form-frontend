@@ -287,7 +287,7 @@ export default function FormGeneral() {
                                             {field.type === 'multiple_choice' && (
                                                 <div className="space-y-2">
                                                     {field.options.map((option, i) => (
-                                                        <label key={i} className="flex items-center space-x-2">
+                                                        <label key={i} className="flex items-center space-x-2 text-[12px]">
                                                             <input
                                                                 type="radio"
                                                                 name={`field_${field.uid}`}
@@ -324,7 +324,7 @@ export default function FormGeneral() {
                                             {field.type === 'checkboxes' && (
                                                 <div className="space-y-2">
                                                     {field.options.map((option, i) => (
-                                                        <label key={i} className="flex items-center space-x-2">
+                                                        <label key={i} className="flex items-center space-x-2 text-[12px]">
                                                             <input
                                                                 type="checkbox"
                                                                 checked={(responses[field.uid] || []).includes(option)}
@@ -349,7 +349,7 @@ export default function FormGeneral() {
                                             {field.type === 'file_upload' && (
                                                 <div className="space-y-4">
                                                     {field.content && (
-                                                        <div className="text-gray-600 text-[14px]">{field.content}</div>
+                                                        <div className="text-gray-600 text-[12px]">{field.content}</div>
                                                     )}
                                                     <div>
                                                         <input
@@ -390,96 +390,6 @@ export default function FormGeneral() {
                                                 </div>
                                             )}
 
-                                            {/* image_upload - FIXED */}
-                                            {/* {field.type === 'image_upload' && (
-                                                <div className="space-y-4">
-                                                    <input
-                                                        type="file"
-                                                        accept="image/*"
-                                                        multiple={field.max_images > 1}
-                                                        required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                        className="w-full"
-                                                        onChange={e => {
-                                                            const newFiles = Array.from(e.target.files);
-                                                            const existing = responses[field.uid] || [];
-                                                            const merged = [...existing, ...newFiles];
-                                                            const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
-                                                            handleResponse(field.uid, limited);
-                                                        }}
-                                                    />
-
-                                                    {responses[field.uid]?.length > 0 && (
-                                                        <div className="mt-3 flex gap-4 flex-wrap">
-                                                            {responses[field.uid].map((file, i) => (
-                                                                <div key={i} className="relative">
-                                                                    <img
-                                                                        src={URL.createObjectURL(file)}
-                                                                        alt={`Preview ${i + 1}`}
-                                                                        className="h-24 w-24 object-cover rounded border"
-                                                                    />
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => {
-                                                                            const updated = responses[field.uid].filter((_, idx) => idx !== i);
-                                                                            handleResponse(field.uid, updated);
-                                                                        }}
-                                                                        className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded"
-                                                                    >
-                                                                        ✕
-                                                                    </button>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    )}
-
-                                                    {(field.checkbox_options?.length > 0 || field.choice_options?.length > 0) && (
-                                                        <div className="mt-4 p-4 bg-gray-50 rounded border">
-                                                            {field.checkbox_options?.length > 0 && (
-                                                                <div className="space-y-2">
-                                                                    <div className="font-medium">Select all that apply:</div>
-                                                                    {field.checkbox_options.map((opt, i) => (
-                                                                        <label key={i} className="flex items-center gap-2">
-                                                                            <input
-                                                                                type="checkbox"
-                                                                                checked={(responses[`${field.uid}_checkboxes`] || []).includes(opt.label || opt)}
-                                                                                onChange={e => {
-                                                                                    const current = responses[`${field.uid}_checkboxes`] || [];
-                                                                                    const optionValue = opt.label || opt;
-                                                                                    let updated;
-                                                                                    if (e.target.checked) {
-                                                                                        updated = [...current, optionValue];
-                                                                                    } else {
-                                                                                        updated = current.filter(v => v !== optionValue);
-                                                                                    }
-                                                                                    handleResponse(`${field.uid}_checkboxes`, updated);
-                                                                                }}
-                                                                            />
-                                                                            <span>{opt.label || opt}</span>
-                                                                        </label>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-
-                                                            {field.choice_options?.length > 0 && (
-                                                                <div className="mt-4 space-y-2">
-                                                                    <div className="font-medium">{field.choice_question || 'Select one:'}</div>
-                                                                    {field.choice_options.map((opt, i) => (
-                                                                        <label key={i} className="flex items-center gap-2">
-                                                                            <input
-                                                                                type="radio"
-                                                                                name={`${field.uid}_choice`}
-                                                                                checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
-                                                                                onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
-                                                                            />
-                                                                            <span>{opt.label || opt}</span>
-                                                                        </label>
-                                                                    ))}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )} */}
                                             {field.type === 'image_upload' && (
                                                 <div className="space-y-4">
                                                     {/* Display Admin Images if they exist */}
@@ -508,7 +418,7 @@ export default function FormGeneral() {
                                                     {/* User Upload Section */}
                                                     <div>
                                                         {field.content && (
-                                                            <p className="text-gray-600 text-[14px] mb-3">{field.content}</p>
+                                                            <p className="text-gray-600 text-[12px] mb-3">{field.content}</p>
                                                         )}
 
                                                         <input
