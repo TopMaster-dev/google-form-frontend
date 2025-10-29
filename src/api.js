@@ -30,12 +30,17 @@ export async function getMyForms() {
     return response.data
 }
 
-export async function createForm(payload) {    
+export async function createForm(payload) {
+    console.log(payload);
+    
     const response = await instance.post('/forms', payload)
     return response.data
 }
 
-export async function updateForm(formId, payload) {    
+export async function updateForm(formId, payload) {   
+    console.log(payload);
+    
+    
     const response = await instance.put(`/forms/${formId}`, payload)
     return response.data
 }

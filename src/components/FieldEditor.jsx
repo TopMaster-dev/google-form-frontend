@@ -13,22 +13,12 @@ export default function FieldEditor({ field, onChange }) {
 
     function addOption() {
         const opts = Array.isArray(field.options) ? field.options : []
+        console.log(opts);
+        
         const newOption = { id: Date.now(), label: 'Option' }
         set('options', [...opts, newOption])
     }
 
-    // function handleImageUpload(e) {
-    //     const file = e.target.files[0]
-    //     if (file) {
-    //         const reader = new FileReader()
-    //         reader.onload = (e) => {
-    //             setImagePreview(e.target.result)
-    //             set('imageUrl', e.target.result)
-    //             set('annotations', [])
-    //         }
-    //         reader.readAsDataURL(file)
-    //     }
-    // }
     async function handleImageUpload(e) {        
         const file = e.target.files[0]
         if (file) {
@@ -74,7 +64,6 @@ export default function FieldEditor({ field, onChange }) {
             // Extract filename from path
             const fileName = img.url.split('/').pop();
 
-            console.log(img, '----------------------fileName-------');
             await deleteImage({fileName: fileName, id: img.id});
 
             // Remove from local state
@@ -118,14 +107,13 @@ export default function FieldEditor({ field, onChange }) {
                 <div className="flex items-center gap-2 mb-2">
                     <label className="text-sm">Required</label>
                     <input type="checkbox" checked={!!field.required} onChange={e => set('required', e.target.checked)} />
+                    {(field.type == "short_answer" || field.type == "paragraph") && (
+                        <input type='number' value={field.text_number || ''} onChange={e => set("text_number", e.target.value)} placeholder='0' className="w-full p-2 border rounded mb-2" />
+                    )}
                 </div>
             )}
 
             {['short_answer', 'paragraph', 'date', 'time'].includes(field.type) && (
-                <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
-            )}
-
-            {field.type === 'file_upload' && (
                 <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
             )}
 
@@ -149,26 +137,6 @@ export default function FieldEditor({ field, onChange }) {
                                     accept="image/*"
                                     multiple
                                     ref={adminImageInputRef}
-                                    // onChange={e => {
-                                    //     const files = Array.from(e.target.files);
-                                    //     const readers = files.map(file => {
-                                    //         return new Promise((resolve) => {
-                                    //             const reader = new FileReader();
-                                    //             reader.onload = (e) => resolve(e.target.result);
-                                    //             reader.readAsDataURL(file);
-                                    //         });
-                                    //     });
-
-                                    //     Promise.all(readers).then(results => {
-                                    //         const newImages = results.map(dataUrl => ({
-                                    //             id: Date.now() + Math.random(),
-                                    //             url: dataUrl
-                                    //         }));
-                                    //         const updatedImages = [...(field.adminImages || []), ...newImages];
-                                    //         set('adminImages', updatedImages);
-                                    //         setAdminImagePreviews(updatedImages);
-                                    //     });
-                                    // }}
                                     onChange={e => {
                                         const files = Array.from(e.target.files);
                                         handleAdminImagesUpload(files);
@@ -186,11 +154,6 @@ export default function FieldEditor({ field, onChange }) {
                                                 className="w-full h-32 object-cover rounded"
                                             />
                                             <button
-                                                // onClick={() => {
-                                                //     const updatedImages = field.adminImages.filter(i => i.id !== img.id);
-                                                //     set('adminImages', updatedImages);
-                                                //     setAdminImagePreviews(updatedImages);
-                                                // }}
                                                 onClick={() => handleAdminImageDelete(img)}
                                                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
                                             >×</button>
@@ -389,7 +352,7 @@ export default function FieldEditor({ field, onChange }) {
                 </div>
             )}
 
-            {field.type === 'section' && (
+            {['section', 'checkboxes', 'dropdown', 'title', 'file_upload'].includes(field.type) && (
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-2">セクション内容</label>

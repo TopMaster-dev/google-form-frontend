@@ -71,7 +71,6 @@ export default function FormBuilderPanel({ form, onSave }) {
             return { ...prevLocal, fields: arr }
         })
     }
-
     function copyField(uid) {
         const field = local.fields.find(f => f.uid === uid)
         if (!field) return
@@ -120,6 +119,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                     type: f.type || 'short_answer',
                     required: !!f.required,
                     placeholder: f.placeholder || '',
+                    text_number: f.text_number || '',
                     options: normalizeArray(f.options).map(o =>
                         typeof o === 'string' ? o : o.label || ''
                     ),
@@ -168,8 +168,7 @@ export default function FormBuilderPanel({ form, onSave }) {
             title: 'title'
         }
         return type // Keep the frontend types as is, no need to map
-    }
-
+    }    
     return (
         <>
             <div className="grid grid-cols-12 gap-4">
@@ -184,7 +183,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                             >
                                 <option value="0">カテゴリを選択</option>
                                 <option value="1">オープニングムービー</option>
-                                <option value="2">プロフィールムービ</option>
+                                <option value="2">プロフィールムービー</option>
                                 <option value="3">エンドロール・レタームービーその他</option>
                             </select>
                         </div>

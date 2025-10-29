@@ -349,7 +349,7 @@ export default function FormGeneral() {
                                             {field.type === 'file_upload' && (
                                                 <div className="space-y-4">
                                                     {field.content && (
-                                                        <div className="text-gray-600">{field.content}</div>
+                                                        <div className="text-gray-600 text-[14px]">{field.content}</div>
                                                     )}
                                                     <div>
                                                         <input
@@ -485,14 +485,13 @@ export default function FormGeneral() {
                                                     {/* Display Admin Images if they exist */}
                                                     {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                         <div className="mb-4">
-                                                            <div className="text-sm font-medium text-gray-700 mb-2">Reference Images:</div>
-                                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                 {field.adminImages.map((adminImg, index) => (
                                                                     <div key={adminImg.id || index} className="border rounded overflow-hidden">
                                                                         <img
                                                                             src={adminImg.url}
                                                                             alt={`Reference image ${index + 1}`}
-                                                                            className="w-full h-24 object-cover"
+                                                                            className="w-full object-cover"
                                                                             onError={(e) => {
                                                                                 e.target.src = '/placeholder-image.jpg';
                                                                                 console.error('Failed to load admin image:', adminImg.url);
@@ -502,19 +501,14 @@ export default function FormGeneral() {
                                                                 ))}
                                                             </div>
                                                             <p className="text-xs text-gray-500 mt-1">
-                                                                These are reference images provided by the form creator.
                                                             </p>
                                                         </div>
                                                     )}
 
                                                     {/* User Upload Section */}
                                                     <div>
-                                                        <div className="text-sm font-medium mb-2">
-                                                            アップロードされた画像 {field.max_images > 1 ? `(最大 ${field.max_images})` : ''}
-                                                        </div>
-
                                                         {field.content && (
-                                                            <p className="text-gray-600 text-sm mb-3">{field.content}</p>
+                                                            <p className="text-gray-600 text-[14px] mb-3">{field.content}</p>
                                                         )}
 
                                                         <input
@@ -646,7 +640,7 @@ export default function FormGeneral() {
 
                                             {/* section - Display only */}
                                             {field.type === 'section' && field.placeholder !== '' && (
-                                                <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                                                <div className="border-l-4 p-4 rounded">
                                                     <div className="text-blue-700">
                                                         {field.placeholder}
                                                     </div>
