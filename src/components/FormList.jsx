@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react'
 
-export default function FormsList({ forms = [], onOpen, onDelete, onViewResponses, onCopy }) {
+export default function FormsList({ forms = [], onOpen, onDelete, onViewResponses, onCopy, resetCopyButton }) {
     const [showShareModal, setShowShareModal] = useState(false);
     const [selectedForm, setSelectedForm] = useState(null);
     const [selectedCopyForm, setSelectedCopyForm] = useState(false);
     const [selectedCopyFormData, setSelectedCopyFormData] = useState(null);
+    const [isFormCopied, setIsFormCopied] = useState(false);
+
+    useEffect(() => {
+        if (resetCopyButton > 0) {
+            setIsFormCopied(false);
+        }
+    }, [resetCopyButton]);
 
     useEffect(() => {
         if (selectedCopyForm) {
-            onCopy(selectedCopyForm);            
+            onCopy(selectedCopyForm);
+            setIsFormCopied(true);
             setSelectedCopyForm(false);
         }
     }, [selectedCopyForm]);
@@ -41,11 +49,19 @@ export default function FormsList({ forms = [], onOpen, onDelete, onViewResponse
             <div className="space-y-3">
                 <div className="bg-white p-3 rounded shadow">
                     <button onClick={() => onViewResponses({id: 0})} className="px-2 py-1 border rounded text-sm w-full border-[#2563eb] hover:bg-blue-100">すべての回答を見る</button>
-                    <button onClick={() => selectedCopyFormData?.id && setSelectedCopyForm(true)} className="px-2 py-1 border rounded text-sm mt-4 w-full border-[#2563eb] hover:bg-blue-100">フォームをコピー</button>
+                    <button 
+                        onClick={() => selectedCopyFormData?.id && setSelectedCopyForm(true)} 
+                        className={`px-2 py-1 border rounded text-sm mt-4 w-full ${isFormCopied ? 'border-red-600 hover:bg-red-100' : 'border-[#2563eb] hover:bg-blue-100'}`}
+                    >
+                        フォームをコピー
+                    </button>
                 </div>
                 <div className="bg-white p-3 rounded shadow">
                     <button
-                        onClick={() => onOpen(null)}
+                        onClick={() => {
+                            setIsFormCopied(false);
+                            onOpen(null);
+                        }}
                         className="w-full text-left font-medium hover:text-blue-600 transition-colors"
                     >
                         + 新規フォーム

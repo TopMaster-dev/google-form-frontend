@@ -10,6 +10,7 @@ export default function AdminPanel({ user, onLogout }) {
     const [active, setActive] = useState(null)
     const [showResponsesFor, setShowResponsesFor] = useState(null)
     const [selectedCopyForm, setSelectedCopyForm] = useState(false)
+    const [resetCopyButton, setResetCopyButton] = useState(0)
 
     async function load() {
         try {
@@ -36,6 +37,7 @@ export default function AdminPanel({ user, onLogout }) {
             } else {
                 await createForm(form)
             }
+            setResetCopyButton(prev => prev + 1);
             await load()
         } catch (e) { console.error(e) }
     }
@@ -144,7 +146,7 @@ export default function AdminPanel({ user, onLogout }) {
 
             <main className="p-6 grid grid-cols-12 gap-6 pb-20">
                 <aside className="col-span-3">
-                    <FormsList forms={forms} onOpen={handleOpen} onDelete={handleDelete} onViewResponses={(f) => setShowResponsesFor(f)} onCopy={(f) => setSelectedCopyForm(f)} />
+                    <FormsList forms={forms} onOpen={handleOpen} onDelete={handleDelete} onViewResponses={(f) => setShowResponsesFor(f)} onCopy={(f) => setSelectedCopyForm(f)} resetCopyButton={resetCopyButton} />
                 </aside>
 
                 <section className="col-span-9">
