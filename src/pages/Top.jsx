@@ -61,7 +61,7 @@ export default function Top() {
                     <select
                         value={selected[categoryId]}
                         onChange={e => setSelected(s => ({ ...s, [categoryId]: e.target.value }))}
-                        className="w-full p-4 text-lg border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
+                        className="w-full p-4 text-[14px] border-2 border-gray-300 rounded-lg focus:ring-pink-500 focus:border-pink-500 appearance-none bg-white"
                         style={{
                             backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
                             backgroundPosition: 'right 12px center',
@@ -87,7 +87,7 @@ export default function Top() {
                     onClick={() => handleProceed(categoryId)}
                     className={`px-8 py-4 rounded-lg font-semibold text-[14px] transition-colors duration-200 flex items-center gap-2 ${
                         selected[categoryId] 
-                            ? 'bg-[#215261] hover:bg-teal-700 text-white' 
+                            ? 'bg-[#215261] hover:bg-[#97AEB5] text-white' 
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                     disabled={!selected[categoryId]}
@@ -135,7 +135,7 @@ export default function Top() {
 
                     {/* Movie selection section */}
                     <div className="p-6 rounded-lg mb-8">
-                        <h2 className="text-2xl font-bold text-[#D6939D] mb-6 text-center">
+                        <h2 className="text-[14px] font-bold text-[#D6939D] mb-6 text-center">
                             ご注文のムービーをお選びください
                         </h2>
                         {renderMovieSection(1, 'オープニングムービー')}

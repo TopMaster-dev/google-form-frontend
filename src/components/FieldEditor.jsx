@@ -114,7 +114,10 @@ export default function FieldEditor({ field, onChange }) {
             )}
 
             {['short_answer', 'paragraph', 'date', 'time'].includes(field.type) && (
-                <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
+                <>
+                    <input value={field.ex_placeholder || ''} onChange={e => set('ex_placeholder', e.target.value)} placeholder="備考欄" className="w-full p-2 border rounded mb-2" />
+                    <input value={field.placeholder || ''} onChange={e => set('placeholder', e.target.value)} placeholder="プレースホルダー (任意)" className="w-full p-2 border rounded mb-2" />
+                </>
             )}
 
             {field.type === 'image_upload' && (
@@ -352,7 +355,7 @@ export default function FieldEditor({ field, onChange }) {
                 </div>
             )}
 
-            {['section', 'checkboxes', 'dropdown', 'title', 'file_upload'].includes(field.type) && (
+            {['section', 'checkboxes', 'dropdown', 'title', 'file_upload', 'multiple_choice'].includes(field.type) && (
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-2">セクション内容</label>
@@ -372,26 +375,6 @@ export default function FieldEditor({ field, onChange }) {
                             accept="image/*"
                             multiple
                             ref={adminImageInputRef}
-                            // onChange={e => {
-                            //     const files = Array.from(e.target.files);
-                            //     const readers = files.map(file => {
-                            //         return new Promise((resolve) => {
-                            //             const reader = new FileReader();
-                            //             reader.onload = (e) => resolve(e.target.result);
-                            //             reader.readAsDataURL(file);
-                            //         });
-                            //     });
-
-                            //     Promise.all(readers).then(results => {
-                            //         const newImages = results.map(dataUrl => ({
-                            //             id: Date.now() + Math.random(),
-                            //             url: dataUrl
-                            //         }));
-                            //         const updatedImages = [...(field.adminImages || []), ...newImages];
-                            //         set('adminImages', updatedImages);
-                            //         setAdminImagePreviews(updatedImages);
-                            //     });
-                            // }}
                             onChange={e => {
                                 const files = Array.from(e.target.files);
                                 handleAdminImagesUpload(files);

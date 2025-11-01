@@ -257,30 +257,36 @@ export default function FormGeneral() {
                                         <div className="mt-2">
                                             {/* short_answer - FIXED */}
                                             {field.type === 'short_answer' && (
-                                                <input
-                                                    type="text"
-                                                    required={field.required}
-                                                    placeholder={field.placeholder}
-                                                    value={responses[field.uid] || ''}
-                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                    onChange={e => {
-                                                        handleResponse(field.uid, e.target.value);
-                                                    }}
-                                                />
+                                                <>
+                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                    <input
+                                                        type="text"
+                                                        required={field.required}
+                                                        value={responses[field.uid] || ''}
+                                                        placeholder={field.placeholder}
+                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                        onChange={e => {
+                                                            handleResponse(field.uid, e.target.value);
+                                                        }}
+                                                    />
+                                                </>
                                             )}
 
                                             {/* paragraph - FIXED */}
                                             {field.type === 'paragraph' && (
-                                                <textarea
-                                                    required={field.required}
-                                                    placeholder={field.placeholder}
-                                                    value={responses[field.uid] || ''}
-                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                    rows={4}
-                                                    onChange={e => {
-                                                        handleResponse(field.uid, e.target.value);
-                                                    }}
-                                                />
+                                                <>
+                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                    <textarea
+                                                        required={field.required}
+                                                        value={responses[field.uid] || ''}
+                                                        placeholder={field.placeholder}
+                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                        rows={4}
+                                                        onChange={e => {
+                                                            handleResponse(field.uid, e.target.value);
+                                                        }}
+                                                    />
+                                                </>
                                             )}
 
                                             {/* multiple_choice - FIXED */}

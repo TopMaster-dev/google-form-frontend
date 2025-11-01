@@ -265,8 +265,8 @@ export default function FormResponse() {
             <div className="min-h-screen bg-white py-16">
                 <div className="max-w-4xl mx-auto px-4">
                     {/* Main Title */}
-                    <div className="text-center mb-8 mt-16">
-                        <h1 className="text-3xl font-bold text-[#215261]">
+                    <div className="text-center mb-8">
+                        <h1 className="text-[24px] font-bold text-[#215261]">
                             {categoryTitles[category.category_id - 1]} 「{category.title}」
                         </h1>
                     </div>
@@ -337,24 +337,8 @@ export default function FormResponse() {
                         </div>
                     </div>
 
-                    {/* FAQ Section */}
-                    {/* <div className="mb-8">
-                        <h2 className="text-2xl font-semibold text-pink-500 text-center mb-6">よくある質問</h2>
-                        <div className="space-y-4">
-                            {faqs.map((faq, index) => (
-                                <div key={index} className="bg-white rounded-lg p-4 shadow-sm">
-                                    <div className="font-medium text-[#215261] mb-2">
-                                        <span className="text-blue-600">Q.</span> {faq.q}
-                                    </div>
-                                    <div className="text-gray-600 ml-4">
-                                        <span className="text-green-600">A.</span> {faq.a}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div> */}
                     <div className="mb-8 text-center">
-                        <button onClick={handleSubmit} className="bg-[#E0A352] hover:bg-[#E0A352]/80 text-white px-8 py-3 rounded-lg font-medium transition-colors text-[16px]">
+                        <button onClick={handleSubmit} className="bg-[#E0A352] hover:bg-[#E0A352]/80 text-white px-8 py-3 rounded-lg font-[500] transition-colors text-[16px]">
                             送信する <br />
                             （ムービー作成を依頼）
                         </button>
@@ -500,37 +484,44 @@ export default function FormResponse() {
                                                         <div className="mt-2">
                                                             {/* short_answer - FIXED */}
                                                             {field.type === 'short_answer' && (
-                                                                <input
-                                                                    type="text"
-                                                                    required={field.required}
-                                                                    placeholder={field.placeholder}
-                                                                    maxLength={field.text_number}
-                                                                    value={responses[field.uid] || ''}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                                    onChange={e => {
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
+                                                                <>
+                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                                    <input
+                                                                        type="text"
+                                                                        required={field.required}
+                                                                        maxLength={field.text_number}
+                                                                        placeholder={field.placeholder}
+                                                                        value={responses[field.uid] || ''}
+                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                                        onChange={e => {
+                                                                            handleResponse(field.uid, e.target.value);
+                                                                        }}
+                                                                    />
+                                                                </>
                                                             )}
 
                                                             {/* paragraph - FIXED */}
                                                             {field.type === 'paragraph' && (
-                                                                <textarea
-                                                                    required={field.required}
-                                                                    placeholder={field.placeholder}
-                                                                    value={responses[field.uid] || ''}
-                                                                    maxLength={field.text_number}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                                    rows={4}
-                                                                    onChange={e => {
-                                                                        handleResponse(field.uid, e.target.value);
-                                                                    }}
-                                                                />
+                                                                <>
+                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                                    <textarea
+                                                                        required={field.required}
+                                                                        value={responses[field.uid] || ''}
+                                                                        maxLength={field.text_number}
+                                                                        placeholder={field.placeholder}
+                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                                        rows={4}
+                                                                        onChange={e => {
+                                                                            handleResponse(field.uid, e.target.value);
+                                                                        }}
+                                                                    />
+                                                                </>
                                                             )}
 
                                                             {/* multiple_choice - FIXED */}
                                                             {field.type === 'multiple_choice' && (
                                                                 <div className="space-y-2">
+                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.placeholder}</p>
                                                                     {field.options.map((option, i) => (
                                                                         <label key={i} className="flex items-center space-x-2 text-[12px]">
                                                                             <input
@@ -838,37 +829,44 @@ export default function FormResponse() {
                                             <div className="mt-2">
                                                 {/* short_answer - FIXED */}
                                                 {field.type === 'short_answer' && (
-                                                    <input
-                                                        type="text"
-                                                        required={field.required}
-                                                        placeholder={field.placeholder}
-                                                        maxLength={field.text_number}
-                                                        value={responses[field.uid] || ''}
-                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                        onChange={e => {
-                                                            handleResponse(field.uid, e.target.value);
-                                                        }}
-                                                    />
+                                                    <>
+                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                        <input
+                                                            type="text"
+                                                            required={field.required}
+                                                            maxLength={field.text_number}
+                                                            placeholder={field.placeholder}
+                                                            value={responses[field.uid] || ''}
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            onChange={e => {
+                                                                handleResponse(field.uid, e.target.value);
+                                                            }}
+                                                        />
+                                                    </>
                                                 )}
 
                                                 {/* paragraph - FIXED */}
                                                 {field.type === 'paragraph' && (
-                                                    <textarea
-                                                        required={field.required}
-                                                        placeholder={field.placeholder}
-                                                        value={responses[field.uid] || ''}
-                                                        maxLength={field.text_number}
-                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
-                                                        rows={4}
-                                                        onChange={e => {
-                                                            handleResponse(field.uid, e.target.value);
-                                                        }}
-                                                    />
+                                                    <>
+                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                        <textarea
+                                                            required={field.required}
+                                                            value={responses[field.uid] || ''}
+                                                            maxLength={field.text_number}
+                                                            placeholder={field.placeholder}
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            rows={4}
+                                                            onChange={e => {
+                                                                handleResponse(field.uid, e.target.value);
+                                                            }}
+                                                        />
+                                                    </>
                                                 )}
 
                                                 {/* multiple_choice - FIXED */}
                                                 {field.type === 'multiple_choice' && (
                                                     <div className="space-y-2">
+                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.placeholder}</p>
                                                         {field.options.map((option, i) => (
                                                             <label key={i} className="flex items-center space-x-2 text-[12px]">
                                                                 <input

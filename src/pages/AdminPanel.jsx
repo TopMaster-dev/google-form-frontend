@@ -110,6 +110,7 @@ export default function AdminPanel({ user, onLogout }) {
                         type: field.type || 'short_answer',
                         required: !!field.required,
                         placeholder: field.placeholder || '',
+                        ex_placeholder: field.ex_placeholder || '',
                         options: field.options || [],
                         content: field.content || '',
                         max_images: field.max_images || 1,

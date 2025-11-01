@@ -35,6 +35,7 @@ export default function FormBuilderPanel({ form, onSave }) {
             type,
             required: false,
             placeholder: '',
+            ex_placeholder: '',
             options: [],
             adminImages: [], // Array to store admin uploaded images
             enableAdminImages: false // Flag to enable/disable admin images
@@ -81,6 +82,7 @@ export default function FormBuilderPanel({ form, onSave }) {
             type: field.type,
             required: field.required,
             placeholder: field.placeholder,
+            ex_placeholder: field.ex_placeholder,
             options: field.options,
             adminImages: field.adminImages,
             enableAdminImages: field.enableAdminImages
@@ -119,6 +121,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                     type: f.type || 'short_answer',
                     required: !!f.required,
                     placeholder: f.placeholder || '',
+                    ex_placeholder: f.ex_placeholder || '',
                     text_number: f.text_number || '',
                     options: normalizeArray(f.options).map(o =>
                         typeof o === 'string' ? o : o.label || ''
