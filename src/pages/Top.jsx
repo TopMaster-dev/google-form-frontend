@@ -116,7 +116,7 @@ export default function Top() {
             <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg sm-top-sp">
                 {/* Header */}
                 <div className="bg-[#D6939D] text-white p-8 rounded-t-lg">
-                    <h1 className="text-3xl font-bold text-center font-zen-maru-gothic text-[24px]" style={{ fontFamily: 'Zen Maru Gothic'}}>
+                    <h1 className="text-3xl font-bold text-center font-zen-maru-gothic text-[24px]">
                         お写真提出フォーム
                     </h1>
                 </div>

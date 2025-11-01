@@ -16,6 +16,7 @@ export default function FormResponse() {
     const [searchParams] = useSearchParams();
     const selectedMovie = searchParams.get('movie') || 'ボタニカ';
     const [activeSection, setActiveSection] = useState(null);
+    const [maxImageStatus, setMaxImageStatus] = useState(false);
 
     const categoryTitles = ['オープニングムービー', 'プロフィールムービー', 'エンドロール・レタームービーその他'];
 
@@ -73,7 +74,7 @@ export default function FormResponse() {
             setCategory(categoryData);
             setGeneral(generalData);
             console.log(generalData);
-            console.log(formData.fields[0].text_number, '-----------');
+            console.log(formData.fields, '-----------');
         } catch (err) {
             setError(err.response?.data?.message || 'Form not found');
         } finally {
@@ -476,7 +477,7 @@ export default function FormResponse() {
                                 {general.map((item, idx) => (
                                     <React.Fragment key={item.id || item.uid || idx}>
                                         <div className="p-6 border-b" id={item.title}>
-                                            <h1 className="text-[18px] text-center font-bold text-[#215261] section-title" style={{ fontFamily: 'Zen Maru Gothic' }}>{item.title}</h1>
+                                            <h1 className="text-[18px] text-center font-bold text-[#215261] section-title">{item.title}</h1>
                                             {item.description && (
                                                 <p className="mt-2 text-gray-600 text-center">{item.description}</p>
                                             )}
@@ -674,6 +675,7 @@ export default function FormResponse() {
                                                                                 const existing = responses[field.uid] || [];
                                                                                 const merged = [...existing, ...newFiles];
                                                                                 const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
+                                                                                limited.length >= field.max_images ? setMaxImageStatus(true) : setMaxImageStatus(false);
                                                                                 handleResponse(field.uid, limited);
                                                                             }}
                                                                         />
@@ -704,6 +706,7 @@ export default function FormResponse() {
                                                                                     </div>
                                                                                 ))}
                                                                             </div>
+                                                                            {maxImageStatus == true && <p className="text-red-500 text-sm">最大画像数に達しました</p>}
                                                                         </div>
                                                                     )}
 
@@ -1074,7 +1077,6 @@ export default function FormResponse() {
 
                                                         {/* User Upload Section */}
                                                         <div>
-
                                                             <input
                                                                 type="file"
                                                                 accept="image/*"
@@ -1084,8 +1086,9 @@ export default function FormResponse() {
                                                                 onChange={e => {
                                                                     const newFiles = Array.from(e.target.files);
                                                                     const existing = responses[field.uid] || [];
-                                                                    const merged = [...existing, ...newFiles];
-                                                                    const limited = field.max_images ? merged.slice(0, field.max_images) : merged;
+                                                                    const merged = [...existing, ...newFiles];                                                                    
+                                                                    const limited = field.max_images ? merged.slice(0, field.max_images) : merged;                                                                    
+                                                                    limited.length >= field.max_images ? setMaxImageStatus(true) : setMaxImageStatus(false);
                                                                     handleResponse(field.uid, limited);
                                                                 }}
                                                             />
@@ -1116,6 +1119,7 @@ export default function FormResponse() {
                                                                         </div>
                                                                     ))}
                                                                 </div>
+                                                                {maxImageStatus && <p className="text-red-500 text-[12px] mt-4">最大画像数に達しました!!!</p>}
                                                             </div>
                                                         )}
 
@@ -1234,5 +1238,3 @@ export default function FormResponse() {
         </div >
     )
 }
-
-

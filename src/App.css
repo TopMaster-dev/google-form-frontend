@@ -7,6 +7,45 @@
 
 body {
   scroll-behavior: smooth;
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+div,
+button,
+input,
+textarea,
+select,
+option,
+label,
+a,
+li,
+ul,
+ol,
+table,
+th,
+td,
+tr,
+tbody,
+thead,
+tfoot,
+cite,
+code,
+pre,
+blockquote,
+q,
+s,
+strike,
+sub,
+sup {
+  font-family: "Noto Sans JP", sans-serif;
 }
 
 .logo {
