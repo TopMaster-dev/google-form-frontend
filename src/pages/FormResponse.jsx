@@ -465,7 +465,7 @@ export default function FormResponse() {
                                                 <div key={field.uid} className="space-y-2">
                                                     <label className="block">
                                                         <div
-                                                            className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[14px] text-[#191919] pl-4 p-2 bg-[#F9F6EF]' : 'text-[14px] text-[#191919]'}`}
+                                                            className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[14px] text-[#191919] pl-4 p-2 bg-[#F9F6EF] font-medium' : 'font-medium text-[14px] text-[#191919]'}`}
                                                             {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                                         >
                                                             {field.label}
@@ -809,7 +809,7 @@ export default function FormResponse() {
                                     <div key={field.uid} className="space-y-2">
                                         <label className="block">
                                             <div
-                                                className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[#191919] pl-4 p-2 bg-[#F9F6EF] text-[14px]' : 'text-[14px] text-[#191919]'}`}
+                                                className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[#191919] pl-4 p-2 bg-[#F9F6EF] text-[14px] font-medium' : 'font-medium text-[14px] text-[#191919]'}`}
                                                 {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                             >
                                                 {field.label}
