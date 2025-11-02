@@ -70,11 +70,9 @@ export default function FormResponse() {
                 adminImages: typeof f.adminImages === "string" ? JSON.parse(f.adminImages) : (f.adminImages || []),
             }));
 
-            setForm(formData);
+            setForm(formData);            
             setCategory(categoryData);
             setGeneral(generalData);
-            console.log(generalData);
-            console.log(formData.fields, '-----------');
         } catch (err) {
             setError(err.response?.data?.message || 'Form not found');
         } finally {
@@ -274,20 +272,15 @@ export default function FormResponse() {
                     {/* Sample Video Section */}
                     <div className="text-center mb-12">
                         <div className="relative inline-block sm-w-full">
-                            <div className="w-96 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden sm-w-full">
-                                {/* Video Thumbnail */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-                                    <div className="text-center">
-                                        <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mb-2 mx-auto">
-                                            <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z" />
-                                            </svg>
-                                        </div>
-                                        <div className="text-xs text-[#191919] bg-white bg-opacity-80 px-2 py-1 rounded">
-                                            [結婚式プロフィール...]
-                                        </div>
-                                    </div>
-                                </div>
+                            <div className="w-96 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative overflow-hidden sm:w-full">
+                                <iframe
+                                    className="w-full h-full"
+                                    src={form.video_url}
+                                    frameBorder="0"
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
                             </div>
                             <div className="text-[14px] text-[#191919] mt-2">サンプルムービー</div>
                         </div>

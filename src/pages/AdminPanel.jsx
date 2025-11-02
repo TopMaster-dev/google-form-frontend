@@ -83,6 +83,7 @@ export default function AdminPanel({ user, onLogout }) {
             setActive({
                 title: '無題のフォーム',
                 description: '',
+                video_url: '',
                 theme: 'default',
                 fields: [],
                 questions: [],

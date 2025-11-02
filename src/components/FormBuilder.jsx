@@ -8,6 +8,7 @@ function emptyForm() {
     return {
         title: '無題のフォーム',
         description: '',
+        video_url: '',
         theme: 'default',
         fields: [],
         questions: [], // ensure compatibility with backend
@@ -112,6 +113,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                 title: local.title || '無題のフォーム',
                 category_id: local.category_id || null,
                 description: local.description || '',
+                video_url: local.video_url || '',
                 theme: local.theme || 'default',
                 allow_multiple_responses: local.allow_multiple_responses ?? true,
                 require_email: local.require_email ?? false,
@@ -194,6 +196,7 @@ export default function FormBuilderPanel({ form, onSave }) {
                             <input value={local.title} onChange={e => setLocal({ ...local, title: e.target.value })} placeholder="フォームタイトル" className="text-xl font-semibold w-full p-2 border rounded" />
                             <button onClick={save} className="bg-purple-600 text-white px-4 py-2 rounded">{local.id ? '更新' : '保存'}</button>
                         </div>
+                        <textarea value={local.video_url} onChange={e => setLocal({ ...local, video_url: e.target.value })} placeholder="フォームのビデオURL" className="w-full p-2 border rounded" />
                         <textarea value={local.description} onChange={e => setLocal({ ...local, description: e.target.value })} placeholder="フォームの説明" className="w-full p-2 border rounded" />
                         <div className="space-y-3">
                             {local.fields.map((f, idx) => (
