@@ -283,13 +283,13 @@ export default function FormResponse() {
                                                 <path d="M8 5v14l11-7z" />
                                             </svg>
                                         </div>
-                                        <div className="text-xs text-gray-600 bg-white bg-opacity-80 px-2 py-1 rounded">
+                                        <div className="text-xs text-[#191919] bg-white bg-opacity-80 px-2 py-1 rounded">
                                             [結婚式プロフィール...]
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="text-sm text-gray-600 mt-2">サンプルムービー</div>
+                            <div className="text-[14px] text-[#191919] mt-2">サンプルムービー</div>
                         </div>
                     </div>
 
@@ -304,9 +304,9 @@ export default function FormResponse() {
                                 <a href={`#${item.title}`} key={item.id || idx} className='bg-[#F9F6EF] hover:bg-gray-200 p-4 rounded-lg cursor-pointer flex items-center justify-between transition-colors'>
                                     <div>
                                         <div className="font-medium text-[#191919] text-[16px]">{item.title}</div>
-                                        <div className="text-sm text-gray-600 text-[16px]">{item.description}</div>
+                                        <div className="text-[14px] text-[#191919] text-[16px]">{item.description}</div>
                                     </div>
-                                    <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 text-[#191919]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                     </svg>
                                 </a>
@@ -329,7 +329,7 @@ export default function FormResponse() {
                                             <div>
                                                 <div className="font-medium text-[#191919] text-[16px]">{item.label}</div>
                                             </div>
-                                            <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-5 h-5 text-[#191919]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                             </svg>
                                         </a>
@@ -361,7 +361,7 @@ export default function FormResponse() {
                         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                             <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
                                 <div className="flex justify-between items-center mb-4">
-                                    <h3 className="text-lg font-semibold">
+                                    <h3 className="text-[24px] font-semibold">
                                         {sections.info.find(s => s.id === activeSection)?.title ||
                                             sections.photos.find(s => s.id === activeSection)?.title}
                                     </h3>
@@ -374,13 +374,13 @@ export default function FormResponse() {
                                         </svg>
                                     </button>
                                 </div>
-                                <div className="text-gray-600 mb-4">
+                                <div className="text-[14px] text-[#191919] mb-4">
                                     {sections.info.find(s => s.id === activeSection)?.description ||
                                         sections.photos.find(s => s.id === activeSection)?.description}
                                 </div>
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-[#191919] mb-2">
+                                        <label className="block text-[14px] font-medium text-[#191919] mb-2">
                                             ファイルをアップロード
                                         </label>
                                         <input
@@ -391,7 +391,7 @@ export default function FormResponse() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-[#191919] mb-2">
+                                        <label className="block text-[14px] font-medium text-[#191919] mb-2">
                                             メッセージ (任意)
                                         </label>
                                         <textarea
@@ -403,13 +403,13 @@ export default function FormResponse() {
                                 <div className="flex gap-2 mt-6">
                                     <button
                                         onClick={() => setActiveSection(null)}
-                                        className="flex-1 bg-gray-300 hover:bg-gray-400 text-[#191919] py-2 rounded-lg transition-colors"
+                                        className="flex-1 bg-gray-300 hover:bg-gray-400 text-[14px] text-[#191919] py-2 rounded-lg transition-colors"
                                     >
                                         キャンセル
                                     </button>
                                     <button
                                         onClick={() => setActiveSection(null)}
-                                        className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors"
+                                        className="flex-1 bg-blue-500 hover:bg-blue-600 text-[14px] text-white py-2 rounded-lg transition-colors"
                                     >
                                         保存
                                     </button>
@@ -424,15 +424,15 @@ export default function FormResponse() {
 
                     {view === "success" ? (
                         <div className="p-8 text-center">
-                            <h2 className="text-2xl font-bold text-green-600 mb-4">ご回答ありがとうございました！</h2>
-                            <p className="text-[#191919] mb-6">ご回答いただきありがとうございました。</p>
+                            <h2 className="text-[24px] font-bold text-green-600 mb-4">ご回答ありがとうございました！</h2>
+                            <p className="text-[14px] text-[#191919] mb-6">ご回答いただきありがとうございました。</p>
                             <button
                                 onClick={() => {
                                     setSubmitted(false);
                                     setResponses({});
                                     setView("form"); // switch back to form
                                 }}
-                                className="px-6 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                                className="px-6 py-2 bg-purple-600 text-[14px] text-white rounded hover:bg-purple-700"
                             >
                                 もう一度回答する
                             </button>
@@ -440,22 +440,16 @@ export default function FormResponse() {
                     ) : (
                         <>
                             {error && form && (
-                                <div className="p-4 bg-red-100 text-red-700 rounded m-6">
+                                <div className="p-4 bg-red-100 text-[14px] text-red-700 rounded m-6">
                                     {error}
                                     <button
                                         onClick={() => setError(null)}
-                                        className="ml-3 text-blue-600 underline"
+                                        className="ml-3 text-[14px] text-blue-600 underline"
                                     >
                                         閉じる
                                     </button>
                                 </div>
                             )}
-
-                            {/* Debug Panel - Remove this in production */}
-                            {/* <div className="p-4 bg-gray-100 m-6 rounded">
-                            <h3 className="font-bold">Debug Info:</h3>
-                            <p>Current responses: {JSON.stringify(responses, null, 2)}</p>
-                        </div> */}
 
                             <form onSubmit={handleSubmit} className="p-6 space-y-10">
                                 {general.map((item, idx) => (
@@ -463,7 +457,7 @@ export default function FormResponse() {
                                         <div className="p-6 border-b" id={item.title}>
                                             <h1 className="text-[18px] text-center font-bold text-[#215261] section-title">{item.title}</h1>
                                             {item.description && (
-                                                <p className="mt-2 text-gray-600 text-center">{item.description}</p>
+                                                <p className="mt-2 text-[#191919] text-center text-[14px]">{item.description}</p>
                                             )}
                                         </div>
                                         {
@@ -471,28 +465,27 @@ export default function FormResponse() {
                                                 <div key={field.uid} className="space-y-2">
                                                     <label className="block">
                                                         <div
-                                                            className={`font-medium text-[#191919] text-[14px] rounded-[5px] ${field.type == 'title' ? 'pl-4 p-2 bg-[#F9F6EF]' : ''}`}
+                                                            className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[14px] text-[#191919] pl-4 p-2 bg-[#F9F6EF]' : 'text-[14px] text-[#191919]'}`}
                                                             {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                                         >
-                                                            {/* {idx + 1}. {field.label} */}
-                                                            {field.type == 'section' ? 'セクション ー' + field.label : field.type == 'title' ? field.label : field.label}
+                                                            {field.label}
                                                             {field.required && (
                                                                 <span className="text-red-500 ml-1">*</span>
                                                             )}
                                                         </div>
-
+                                                        
                                                         <div className="mt-2">
                                                             {/* short_answer - FIXED */}
                                                             {field.type === 'short_answer' && (
                                                                 <>
-                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                                    <p className='text-[#191919] text-[12px] mb-3'>{field.ex_placeholder}</p>
                                                                     <input
                                                                         type="text"
                                                                         required={field.required}
                                                                         maxLength={field.text_number}
                                                                         placeholder={field.placeholder}
                                                                         value={responses[field.uid] || ''}
-                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                         onChange={e => {
                                                                             handleResponse(field.uid, e.target.value);
                                                                         }}
@@ -503,13 +496,13 @@ export default function FormResponse() {
                                                             {/* paragraph - FIXED */}
                                                             {field.type === 'paragraph' && (
                                                                 <>
-                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                                    <p className='text-[#191919] text-[12px] mb-3'>{field.ex_placeholder}</p>
                                                                     <textarea
                                                                         required={field.required}
                                                                         value={responses[field.uid] || ''}
                                                                         maxLength={field.text_number}
                                                                         placeholder={field.placeholder}
-                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                                        className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                         rows={4}
                                                                         onChange={e => {
                                                                             handleResponse(field.uid, e.target.value);
@@ -521,9 +514,9 @@ export default function FormResponse() {
                                                             {/* multiple_choice - FIXED */}
                                                             {field.type === 'multiple_choice' && (
                                                                 <div className="space-y-2">
-                                                                    <p className='text-gray-600 text-[12px] mb-3'>{field.placeholder}</p>
+                                                                    <p className='text-[#191919] text-[12px] mb-3'>{field.placeholder}</p>
                                                                     {field.options.map((option, i) => (
-                                                                        <label key={i} className="flex items-center space-x-2 text-[12px]">
+                                                                        <label key={i} className="flex items-center space-x-2 text-[14px] text-[#191919]">
                                                                             <input
                                                                                 type="radio"
                                                                                 name={`field_${field.uid}`}
@@ -544,7 +537,7 @@ export default function FormResponse() {
                                                                 <select
                                                                     required={field.required}
                                                                     value={responses[field.uid] || ''}
-                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                                    className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                     onChange={e => handleResponse(field.uid, e.target.value)}
                                                                 >
                                                                     <option value="">選択...</option>
@@ -560,7 +553,7 @@ export default function FormResponse() {
                                                             {field.type === 'checkboxes' && (
                                                                 <div className="space-y-2">
                                                                     {field.options.map((option, i) => (
-                                                                        <label key={i} className="flex items-center space-x-2 text-[12px]">
+                                                                        <label key={i} className="flex items-center space-x-2 text-[14px] text-[#191919]">
                                                                             <input
                                                                                 type="checkbox"
                                                                                 checked={(responses[field.uid] || []).includes(option)}
@@ -585,14 +578,14 @@ export default function FormResponse() {
                                                             {field.type === 'file_upload' && (
                                                                 <div className="space-y-4">
                                                                     {field.content && (
-                                                                        <div className="text-gray-600 text-[12px]">{field.content}</div>
+                                                                        <div className="text-[#191919] text-[12px]">{field.content}</div>
                                                                     )}
                                                                     <div>
                                                                         <input
                                                                             type="file"
                                                                             multiple={field.max_images > 1}
                                                                             required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                            className="w-full"
+                                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                             onChange={e => {
                                                                                 const newFiles = Array.from(e.target.files);
                                                                                 const existing = responses[field.uid] || [];
@@ -608,14 +601,14 @@ export default function FormResponse() {
                                                                         <div className="mt-3 space-y-2">
                                                                             {responses[field.uid].map((file, i) => (
                                                                                 <div key={i} className="flex items-center justify-between border p-2 rounded">
-                                                                                    <span className="truncate">{file.name}</span>
+                                                                                    <span className="truncate text-[14px] text-[#191919]">{file.name}</span>
                                                                                     <button
                                                                                         type="button"
                                                                                         onClick={() => {
                                                                                             const updated = responses[field.uid].filter((_, idx) => idx !== i);
                                                                                             handleResponse(field.uid, updated);
                                                                                         }}
-                                                                                        className="text-red-600 text-sm"
+                                                                                        className="text-red-600 text-[14px]"
                                                                                     >
                                                                                         ✕
                                                                                     </button>
@@ -631,7 +624,7 @@ export default function FormResponse() {
                                                                     {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                                         <div className="mb-4">
                                                                             {field.content && (
-                                                                                <p className="text-gray-600 text-[12px] mb-3">{field.content}</p>
+                                                                                <p className="text-[#191919] text-[12px] mb-3">{field.content}</p>
                                                                             )}
                                                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                                                 {field.adminImages.map((adminImg, index) => (
@@ -648,7 +641,7 @@ export default function FormResponse() {
                                                                                     </div>
                                                                                 ))}
                                                                             </div>
-                                                                            <p className="text-xs text-gray-500 mt-1">
+                                                                            <p className="text-[14px] text-[#191919] mt-1">
                                                                             </p>
                                                                         </div>
                                                                     )}
@@ -660,7 +653,7 @@ export default function FormResponse() {
                                                                             accept="image/*"
                                                                             multiple={field.max_images > 1}
                                                                             required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                            className="w-full p-2 border rounded"
+                                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                             onChange={e => {
                                                                                 const newFiles = Array.from(e.target.files);
                                                                                 const existing = responses[field.uid] || [];
@@ -675,14 +668,14 @@ export default function FormResponse() {
                                                                     {/* Image Previews */}
                                                                     {responses[field.uid]?.length > 0 && (
                                                                         <div className="mt-3">
-                                                                            <div className="text-sm font-medium mb-2">アップロードされた画像:</div>
+                                                                            <div className="text-[#191919] text-[14px] mb-2">アップロードされた画像:</div>
                                                                             <div className="flex gap-4 flex-wrap">
                                                                                 {responses[field.uid].map((file, i) => (
                                                                                     <div key={i} className="relative">
                                                                                         <img
                                                                                             src={URL.createObjectURL(file)}
                                                                                             alt={`Preview ${i + 1}`}
-                                                                                            className="h-24 w-24 object-cover rounded border"
+                                                                                            className="h-24 w-24 object-cover rounded border text-[14px] text-[#191919]"
                                                                                         />
                                                                                         <button
                                                                                             type="button"
@@ -690,14 +683,14 @@ export default function FormResponse() {
                                                                                                 const updated = responses[field.uid].filter((_, idx) => idx !== i);
                                                                                                 handleResponse(field.uid, updated);
                                                                                             }}
-                                                                                            className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded"
+                                                                                            className="absolute top-1 right-1 bg-red-600 text-white text-[14px] px-1.5 py-0.5 rounded"
                                                                                         >
                                                                                             ✕
                                                                                         </button>
                                                                                     </div>
                                                                                 ))}
                                                                             </div>
-                                                                            {maxImageStatus == true && <p className="text-red-500 text-sm">最大画像数に達しました</p>}
+                                                                            {maxImageStatus == true && <p className="text-red-500 text-[14px]">最大画像数に達しました</p>}
                                                                         </div>
                                                                     )}
 
@@ -706,7 +699,7 @@ export default function FormResponse() {
                                                                         <div className="mt-4 p-4 bg-gray-50 rounded border">
                                                                             {field.checkbox_options?.length > 0 && (
                                                                                 <div className="space-y-2">
-                                                                                    <div className="font-medium">適用するものを選択:</div>
+                                                                                    <div className="text-[14px] text-[#191919]">適用するものを選択:</div>
                                                                                     {field.checkbox_options.map((opt, i) => (
                                                                                         <label key={i} className="flex items-center gap-2">
                                                                                             <input
@@ -724,7 +717,7 @@ export default function FormResponse() {
                                                                                                     handleResponse(`${field.uid}_checkboxes`, updated);
                                                                                                 }}
                                                                                             />
-                                                                                            <span className="text-sm">{opt.label || opt}</span>
+                                                                                            <span className="text-[14px] text-[#191919]">{opt.label || opt}</span>
                                                                                         </label>
                                                                                     ))}
                                                                                 </div>
@@ -732,7 +725,7 @@ export default function FormResponse() {
 
                                                                             {field.choice_options?.length > 0 && (
                                                                                 <div className="mt-4 space-y-2">
-                                                                                    <div className="font-medium">{field.choice_question || '1つ選択:'}</div>
+                                                                                    <div className="text-[#191919] text-[14px]">{field.choice_question || '1つ選択:'}</div>
                                                                                     {field.choice_options.map((opt, i) => (
                                                                                         <label key={i} className="flex items-center gap-2">
                                                                                             <input
@@ -741,7 +734,7 @@ export default function FormResponse() {
                                                                                                 checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
                                                                                                 onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
                                                                                             />
-                                                                                            <span className="text-sm">{opt.label || opt}</span>
+                                                                                            <span className="text-[14px] text-[#191919]">{opt.label || opt}</span>
                                                                                         </label>
                                                                                     ))}
                                                                                 </div>
@@ -757,7 +750,7 @@ export default function FormResponse() {
                                                                     type="date"
                                                                     required={field.required}
                                                                     value={responses[field.uid] || ''}
-                                                                    className="p-2 border rounded"
+                                                                    className="p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                     onChange={e => {
                                                                         handleResponse(field.uid, e.target.value);
                                                                     }}
@@ -770,7 +763,7 @@ export default function FormResponse() {
                                                                     type="time"
                                                                     required={field.required}
                                                                     value={responses[field.uid] || ''}
-                                                                    className="p-2 border rounded"
+                                                                    className="p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                     onChange={e => {
                                                                         handleResponse(field.uid, e.target.value);
                                                                     }}
@@ -780,7 +773,7 @@ export default function FormResponse() {
                                                             {/* section - Display only */}
                                                             {field.type === 'section' && field.placeholder !== '' && (
                                                                 <div className="space-y-4">
-                                                                    <div className="text-blue-700">
+                                                                    <div className="text-[#215261] text-[12px]">
                                                                         {field.placeholder}
                                                                     </div>
                                                                     {field.adminImages?.length > 0 && (
@@ -816,10 +809,9 @@ export default function FormResponse() {
                                     <div key={field.uid} className="space-y-2">
                                         <label className="block">
                                             <div
-                                                className={`text-[14px] rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[#191919] pl-4 p-2 bg-[#F9F6EF] font-medium' : ''}`}
+                                                className={`rounded-[5px] ${field.type == 'section' ? 'text-[18px] text-center font-bold text-[#215261] section-title p-6 border-b' : field.type == 'title' ? 'text-[#191919] pl-4 p-2 bg-[#F9F6EF] text-[14px]' : 'text-[14px] text-[#191919]'}`}
                                                 {...(field.type === 'section' ? { id: `section${field.uid}` } : {})}
                                             >
-                                                {/* {idx + 1}. {field.label} */}
                                                 {field.label}
                                                 {field.required && (
                                                     <span className="text-red-500 ml-1">*</span>
@@ -830,14 +822,14 @@ export default function FormResponse() {
                                                 {/* short_answer - FIXED */}
                                                 {field.type === 'short_answer' && (
                                                     <>
-                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                        <p className='text-[#191919] text-[12px] mb-3'>{field.ex_placeholder}</p>
                                                         <input
                                                             type="text"
                                                             required={field.required}
                                                             maxLength={field.text_number}
                                                             placeholder={field.placeholder}
                                                             value={responses[field.uid] || ''}
-                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                             onChange={e => {
                                                                 handleResponse(field.uid, e.target.value);
                                                             }}
@@ -848,13 +840,13 @@ export default function FormResponse() {
                                                 {/* paragraph - FIXED */}
                                                 {field.type === 'paragraph' && (
                                                     <>
-                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.ex_placeholder}</p>
+                                                        <p className='text-[#191919] text-[12px] mb-3'>{field.ex_placeholder}</p>
                                                         <textarea
                                                             required={field.required}
                                                             value={responses[field.uid] || ''}
                                                             maxLength={field.text_number}
                                                             placeholder={field.placeholder}
-                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                             rows={4}
                                                             onChange={e => {
                                                                 handleResponse(field.uid, e.target.value);
@@ -866,9 +858,9 @@ export default function FormResponse() {
                                                 {/* multiple_choice - FIXED */}
                                                 {field.type === 'multiple_choice' && (
                                                     <div className="space-y-2">
-                                                        <p className='text-gray-600 text-[12px] mb-3'>{field.placeholder}</p>
+                                                        <p className='text-[#191919] text-[12px] mb-3'>{field.placeholder}</p>
                                                         {field.options.map((option, i) => (
-                                                            <label key={i} className="flex items-center space-x-2 text-[12px]">
+                                                            <label key={i} className="flex items-center space-x-2 text-[14px] text-[#191919]">
                                                                 <input
                                                                     type="radio"
                                                                     name={`field_${field.uid}`}
@@ -878,7 +870,7 @@ export default function FormResponse() {
                                                                         handleResponse(field.uid, option);
                                                                     }}
                                                                 />
-                                                                <span>{option}</span>
+                                                                <span className="text-[14px] text-[#191919]">{option}</span>
                                                             </label>
                                                         ))}
                                                     </div>
@@ -888,7 +880,7 @@ export default function FormResponse() {
                                                 {field.type === 'dropdown' && (
                                                     <>
                                                         <div className="space-y-4">
-                                                            <div className="text-gray-600 text-[12px]">
+                                                            <div className="text-[#191919] text-[12px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
@@ -899,7 +891,7 @@ export default function FormResponse() {
                                                                                 <img
                                                                                     src={adminImg.url}
                                                                                     alt={`Reference image ${index + 1}`}
-                                                                                    className="w-full h-full object-cover border"
+                                                                                    className="w-full h-full object-cover border text-[14px] text-[#191919]"
                                                                                     onError={(e) => {
                                                                                         e.target.src = '/placeholder-image.jpg';
                                                                                         console.error('Failed to load admin image:', adminImg.url);
@@ -914,12 +906,12 @@ export default function FormResponse() {
                                                         <select
                                                             required={field.required}
                                                             value={responses[field.uid] || ''}
-                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500"
+                                                            className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                             onChange={e => handleResponse(field.uid, e.target.value)}
                                                         >
                                                             <option value="">選択...</option>
                                                             {field.options.map((option, i) => (
-                                                                <option key={i} value={option}>
+                                                                <option key={i} value={option} className="text-[14px] text-[#191919]">
                                                                     {option}
                                                                 </option>
                                                             ))}
@@ -931,7 +923,7 @@ export default function FormResponse() {
                                                 {field.type === 'checkboxes' && (
                                                     <div className="space-y-2">
                                                         <div className="space-y-4">
-                                                            <div className="text-gray-600 text-[12px]">
+                                                            <div className="text-[#191919] text-[12px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
@@ -942,7 +934,7 @@ export default function FormResponse() {
                                                                                 <img
                                                                                     src={adminImg.url}
                                                                                     alt={`Reference image ${index + 1}`}
-                                                                                    className="w-full h-full object-cover border"
+                                                                                    className="w-full h-full object-cover border text-[14px] text-[#191919]"
                                                                                     onError={(e) => {
                                                                                         e.target.src = '/placeholder-image.jpg';
                                                                                         console.error('Failed to load admin image:', adminImg.url);
@@ -955,7 +947,7 @@ export default function FormResponse() {
                                                             )}
                                                         </div>
                                                         {field.options.map((option, i) => (
-                                                            <label key={i} className="flex items-center space-x-2 text-[12px]">
+                                                            <label key={i} className="flex items-center space-x-2 text-[14px] text-[#191919]">
                                                                 <input
                                                                     type="checkbox"
                                                                     checked={(responses[field.uid] || []).includes(option)}
@@ -970,7 +962,7 @@ export default function FormResponse() {
                                                                         handleResponse(field.uid, updated);
                                                                     }}
                                                                 />
-                                                                <span>{option}</span>
+                                                                <span className="text-[14px] text-[#191919]">{option}</span>
                                                             </label>
                                                         ))}
                                                     </div>
@@ -980,10 +972,10 @@ export default function FormResponse() {
                                                 {field.type === 'file_upload' && (
                                                     <div className="space-y-4">
                                                         {field.content && (
-                                                            <div className="text-gray-600 text-[12px]">{field.content}</div>
+                                                            <div className="text-[#191919] text-[12px]">{field.content}</div>
                                                         )}
                                                         <div className="space-y-4">
-                                                            <div className="text-gray-600 text-[12px]">
+                                                            <div className="text-[#191919] text-[12px]">
                                                                 {field.placeholder}
                                                             </div>
                                                             {field.adminImages?.length > 0 && (
@@ -994,7 +986,7 @@ export default function FormResponse() {
                                                                                 <img
                                                                                     src={adminImg.url}
                                                                                     alt={`Reference image ${index + 1}`}
-                                                                                    className="w-full h-full object-cover border"
+                                                                                    className="w-full h-full object-cover border text-[14px] text-[#191919]"
                                                                                     onError={(e) => {
                                                                                         e.target.src = '/placeholder-image.jpg';
                                                                                         console.error('Failed to load admin image:', adminImg.url);
@@ -1011,7 +1003,7 @@ export default function FormResponse() {
                                                                 type="file"
                                                                 multiple={field.max_images > 1}
                                                                 required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                className="w-full"
+                                                                className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                 onChange={e => {
                                                                     const newFiles = Array.from(e.target.files);
                                                                     const existing = responses[field.uid] || [];
@@ -1027,14 +1019,14 @@ export default function FormResponse() {
                                                             <div className="mt-3 space-y-2">
                                                                 {responses[field.uid].map((file, i) => (
                                                                     <div key={i} className="flex items-center justify-between border p-2 rounded">
-                                                                        <span className="truncate">{file.name}</span>
+                                                                        <span className="truncate text-[14px] text-[#191919]">{file.name}</span>
                                                                         <button
                                                                             type="button"
                                                                             onClick={() => {
                                                                                 const updated = responses[field.uid].filter((_, idx) => idx !== i);
                                                                                 handleResponse(field.uid, updated);
                                                                             }}
-                                                                            className="text-red-600 text-sm"
+                                                                            className="text-red-600 text-[14px]"
                                                                         >
                                                                             ✕
                                                                         </button>
@@ -1049,7 +1041,7 @@ export default function FormResponse() {
                                                     <div className="space-y-4">
                                                         {/* Display Admin Images if they exist */}
                                                         {field.content && (
-                                                            <p className="text-gray-600 text-[12px] mb-3">{field.content}</p>
+                                                            <p className="text-[#191919] text-[12px] mb-3">{field.content}</p>
                                                         )}
                                                         {field.enableAdminImages && field.adminImages?.length > 0 && (
                                                             <div className="mb-4">
@@ -1059,7 +1051,7 @@ export default function FormResponse() {
                                                                             <img
                                                                                 src={adminImg.url}
                                                                                 alt={`Reference image ${index + 1}`}
-                                                                                className="w-full object-cover"
+                                                                                className="w-full object-cover text-[14px] text-[#191919]"
                                                                                 onError={(e) => {
                                                                                     e.target.src = '/placeholder-image.jpg';
                                                                                     console.error('Failed to load admin image:', adminImg.url);
@@ -1068,7 +1060,7 @@ export default function FormResponse() {
                                                                         </div>
                                                                     ))}
                                                                 </div>
-                                                                <p className="text-xs text-gray-500 mt-1">
+                                                                <p className="text-[#191919] text-[14px] mt-1">
                                                                 </p>
                                                             </div>
                                                         )}
@@ -1080,7 +1072,7 @@ export default function FormResponse() {
                                                                 accept="image/*"
                                                                 multiple={field.max_images > 1}
                                                                 required={field.required && (!responses[field.uid] || responses[field.uid].length === 0)}
-                                                                className="w-full p-2 border rounded"
+                                                                className="w-full p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                                 onChange={e => {
                                                                     const newFiles = Array.from(e.target.files);
                                                                     const existing = responses[field.uid] || [];
@@ -1095,14 +1087,14 @@ export default function FormResponse() {
                                                         {/* Image Previews */}
                                                         {responses[field.uid]?.length > 0 && (
                                                             <div className="mt-3">
-                                                                <div className="text-sm font-medium mb-2">アップロードされた画像:</div>
+                                                                <div className="text-[#191919] text-[12px] mb-2">アップロードされた画像:</div>
                                                                 <div className="flex gap-4 flex-wrap">
                                                                     {responses[field.uid].map((file, i) => (
                                                                         <div key={i} className="relative">
                                                                             <img
                                                                                 src={URL.createObjectURL(file)}
                                                                                 alt={`Preview ${i + 1}`}
-                                                                                className="h-24 w-24 object-cover rounded border"
+                                                                                className="h-24 w-24 object-cover rounded border text-[14px] text-[#191919]"
                                                                             />
                                                                             <button
                                                                                 type="button"
@@ -1110,14 +1102,14 @@ export default function FormResponse() {
                                                                                     const updated = responses[field.uid].filter((_, idx) => idx !== i);
                                                                                     handleResponse(field.uid, updated);
                                                                                 }}
-                                                                                className="absolute top-1 right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded"
+                                                                                className="absolute top-1 right-1 bg-red-600 text-white text-[14px] px-1.5 py-0.5 rounded"
                                                                             >
                                                                                 ✕
                                                                             </button>
                                                                         </div>
                                                                     ))}
                                                                 </div>
-                                                                {maxImageStatus && <p className="text-red-500 text-[12px] mt-4">最大画像数に達しました!!!</p>}
+                                                                {maxImageStatus && <p className="text-red-500 text-[14px] mt-4">最大画像数に達しました!!!</p>}
                                                             </div>
                                                         )}
 
@@ -1126,7 +1118,7 @@ export default function FormResponse() {
                                                             <div className="mt-4 p-4 bg-gray-50 rounded border">
                                                                 {field.checkbox_options?.length > 0 && (
                                                                     <div className="space-y-2">
-                                                                        <div className="font-medium">適用するものを選択:</div>
+                                                                        <div className="text-[14px] text-[#191919]">適用するものを選択:</div>
                                                                         {field.checkbox_options.map((opt, i) => (
                                                                             <label key={i} className="flex items-center gap-2">
                                                                                 <input
@@ -1144,7 +1136,7 @@ export default function FormResponse() {
                                                                                         handleResponse(`${field.uid}_checkboxes`, updated);
                                                                                     }}
                                                                                 />
-                                                                                <span className="text-sm">{opt.label || opt}</span>
+                                                                                <span className="text-[#191919] text-[14px]">{opt.label || opt}</span>
                                                                             </label>
                                                                         ))}
                                                                     </div>
@@ -1152,7 +1144,7 @@ export default function FormResponse() {
 
                                                                 {field.choice_options?.length > 0 && (
                                                                     <div className="mt-4 space-y-2">
-                                                                        <div className="font-medium">{field.choice_question || '1つ選択:'}</div>
+                                                                        <div className="text-[14px] text-[#191919]">{field.choice_question || '1つ選択:'}</div>
                                                                         {field.choice_options.map((opt, i) => (
                                                                             <label key={i} className="flex items-center gap-2">
                                                                                 <input
@@ -1161,7 +1153,7 @@ export default function FormResponse() {
                                                                                     checked={responses[`${field.uid}_choice`] === (opt.label || opt)}
                                                                                     onChange={() => handleResponse(`${field.uid}_choice`, opt.label || opt)}
                                                                                 />
-                                                                                <span className="text-sm">{opt.label || opt}</span>
+                                                                                <span className="text-[#191919] text-[14px]">{opt.label || opt}</span>
                                                                             </label>
                                                                         ))}
                                                                     </div>
@@ -1177,7 +1169,7 @@ export default function FormResponse() {
                                                         type="date"
                                                         required={field.required}
                                                         value={responses[field.uid] || ''}
-                                                        className="p-2 border rounded"
+                                                        className="p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                         onChange={e => {
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
@@ -1190,7 +1182,7 @@ export default function FormResponse() {
                                                         type="time"
                                                         required={field.required}
                                                         value={responses[field.uid] || ''}
-                                                        className="p-2 border rounded"
+                                                        className="p-2 border rounded focus:ring-2 focus:ring-[#215261] text-[14px] text-[#191919]"
                                                         onChange={e => {
                                                             handleResponse(field.uid, e.target.value);
                                                         }}
@@ -1200,7 +1192,7 @@ export default function FormResponse() {
                                                 {/* section - Display only */}
                                                 {(field.type === 'section' || field.type === 'title') && (
                                                     <div className="space-y-4">
-                                                        <div className="text-gray-600 text-[12px]">
+                                                        <div className="text-[#191919] text-[12px]">
                                                             {field.placeholder}
                                                         </div>
                                                         {field.adminImages?.length > 0 && (
@@ -1211,7 +1203,7 @@ export default function FormResponse() {
                                                                             <img
                                                                                 src={adminImg.url}
                                                                                 alt={`Reference image ${index + 1}`}
-                                                                                className="w-full h-full object-cover"
+                                                                                className="w-full h-full object-cover text-[14px] text-[#191919]"
                                                                                 onError={(e) => {
                                                                                     e.target.src = '/placeholder-image.jpg';
                                                                                     console.error('Failed to load admin image:', adminImg.url);
